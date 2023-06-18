@@ -1,0 +1,95 @@
+/* Expense Container */
+.expense-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+/* Expense Filter */
+.expense-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2.4rem;
+  font-size: 2.4rem;
+}
+
+.expense-filter select {
+  padding: 1.6rem 3.2rem;
+  font-size: 2.4rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 9px;
+}
+
+/* Expense Item */
+.expense-item-container {
+  display: grid;
+  grid-template-columns: 15fr 85fr;
+  column-gap: 2.4rem;
+  align-items: center;
+}
+
+.expense-item-container:last-child {
+  margin-bottom: 1.2rem;
+}
+
+.date-container {
+  grid-row: 1 / -1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.2rem;
+
+  border: 1px solid var(--light);
+  border-radius: 9px;
+  background-color: var(--dark-700);
+}
+
+.date-month {
+  font-size: 2.4rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.date-year {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.date {
+  font-size: 4.8rem;
+  font-weight: bold;
+}
+
+.expense-desc {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.expense-desc__title {
+  flex: 4;
+}
+
+.expense-amount {
+  flex: 1;
+  margin-left: auto;
+  background-color: var(--violet-700);
+  padding: 1.5rem 3rem;
+  font-size: 2.4rem;
+  font-weight: bold;
+
+  border: 1px solid var(--light);
+  border-radius: 9px;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.expense-curr {
+  padding-right: 1.2rem;
+}
