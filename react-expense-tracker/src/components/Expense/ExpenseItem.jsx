@@ -11,7 +11,7 @@ const ExpenseItem = ({ data }) => {
   };
 
   return (
-    <Card className="bg-secondary py-3 px-5 my-3">
+    <Card className="bg-secondary p-3 my-3">
       <div className="row">
         <div className="d-flex align-items-center gap-2">
           <div className="col-md-3 col-sm-3 w-25">
@@ -22,8 +22,8 @@ const ExpenseItem = ({ data }) => {
               {data.title}
             </h2>
           </div>
-          <div className="col-md-3 col-sm-3 ms-auto">
-            <div className="btn btn-primary w-100 p-3 rounded-3 fs-4 fw-bold">
+          <div className="col-md-3 col-sm-3 pe-2 ms-auto">
+            <div className="btn btn-primary w-100 p-3 rounded-5 fs-4 fw-bold">
               <span>$ {data.amount}</span>
             </div>
           </div>

@@ -5,7 +5,7 @@ const ExpenseDate = ({ currDate }) => {
   const currMonth = currDate.toLocaleString("default", { month: "long" });
   const currDateVal = currDate.getDate();
   return (
-    <div className="d-flex flex-column text-center bg-dark text-light p-3 rounded-3">
+    <div className="d-flex flex-column text-center bg-dark text-light p-3 rounded-5">
       <span className="h2">{currMonth}</span>
       <span className="h4">{currYear}</span>
       <span className="h1">{currDateVal}</span>

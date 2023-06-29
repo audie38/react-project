@@ -1,10 +1,22 @@
+import { useState } from "react";
 import ExpenseContainer from "./components/Expense/ExpenseContainer";
 
+const dummyData = [
+  {
+    id: "e1",
+    title: "Dummy",
+    amount: 450,
+    date: new Date(2021, 5, 12),
+  },
+];
+
 function App() {
-  const expenses = [];
+  const [expenses, setExpenses] = useState(dummyData);
 
   const addExpense = (data) => {
-    expenses.push(data);
+    setExpenses((prevExp) => {
+      return [data, ...prevExp];
+    });
   };
 
   return (

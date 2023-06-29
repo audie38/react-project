@@ -7,8 +7,9 @@ const ExpenseFilter = ({ selected, onChangeFilter }) => {
 
   return (
     <div className="d-flex mt-3">
-      <h3>Filter by year</h3>
-      <select onChange={onSelect} value={selected} name="year" className="rounded-3 w-25 ms-auto">
+      <h3 className="h3 text-light">Filter by year</h3>
+      <select onChange={onSelect} value={selected} name="year" className="rounded-5 w-25 text-center ms-auto">
+        <option value="">All</option>
         <option value="2021">2021</option>
         <option value="2022">2022</option>
         <option value="2023">2023</option>

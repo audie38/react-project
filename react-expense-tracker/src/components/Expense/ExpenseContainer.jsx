@@ -9,7 +9,7 @@ import ExpenseList from "./ExpenseList";
 
 const ExpenseContainer = ({ expenses, addExp }) => {
   const [showForm, setShowForm] = useState(false);
-  const [filteredYear, setFilteredYear] = useState("2021");
+  const [filteredYear, setFilteredYear] = useState("");
 
   const toggleShow = () => {
     setShowForm(!showForm);
@@ -19,18 +19,24 @@ const ExpenseContainer = ({ expenses, addExp }) => {
     setFilteredYear(selectedYear);
   };
 
+  const filteredExpenses = expenses.filter((exp) => {
+    if (filteredYear !== "") {
+      return exp.date.getFullYear().toString() === filteredYear;
+    }
+    return exp;
+  });
+
   const submitForm = (data) => {
     const dataObj = {
       id: +new Date(),
       ...data,
     };
-    console.log(dataObj);
     addExp(dataObj);
   };
 
   return (
     <>
-      <Card className="d-flex bg-primary text-light py-3">
+      <Card className="d-flex bg-primary text-light py-3 rounded-top-5">
         <button onClick={toggleShow} className="btn btn-primary fs-3 w-50 mx-auto">
           {showForm ? "Back" : "Add New Expense"}
         </button>
@@ -39,10 +45,10 @@ const ExpenseContainer = ({ expenses, addExp }) => {
       {showForm ? (
         <ExpenseForm submit={submitForm} />
       ) : (
-        <Card className="bg-dark px-5 py-3">
+        <Card className="bg-dark px-5 py-3 rounded-bottom-5">
           <ExpenseFilter selected={filteredYear} onChangeFilter={filterChangeHandler} />
-          <ExpenseChart />
-          <ExpenseList data={expenses} />
+          <ExpenseChart expenses={filteredExpenses} />
+          <ExpenseList data={filteredExpenses} />
         </Card>
       )}
     </>

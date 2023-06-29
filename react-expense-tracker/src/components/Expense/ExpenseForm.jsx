@@ -22,7 +22,7 @@ const ExpenseForm = ({ submit }) => {
   const submitHandler = () => {
     submit({
       title,
-      amount,
+      amount: +amount,
       date: new Date(date),
     });
 
@@ -32,7 +32,7 @@ const ExpenseForm = ({ submit }) => {
   };
 
   return (
-    <Card className="bg-dark">
+    <Card className="bg-dark rounded-bottom-5">
       <form
         onSubmit={(e) => {
           e.preventDefault();

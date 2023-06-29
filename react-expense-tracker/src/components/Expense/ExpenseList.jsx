@@ -4,9 +4,8 @@ import ExpenseItem from "./ExpenseItem";
 const ExpenseList = ({ data }) => {
   return (
     <div className="bg-dark">
-      {data.map((item) => (
-        <ExpenseItem key={item.id} data={item} />
-      ))}
+      {data.length === 0 && <h3 className="h3 text-light">No Expenses Found</h3>}
+      {data.length > 0 && data.map((item) => <ExpenseItem key={item.id} data={item} />)}
     </div>
   );
 };
