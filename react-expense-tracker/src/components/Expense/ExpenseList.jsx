@@ -1,14 +1,13 @@
-import "./Expense.css";
 import PropTypes from "prop-types";
 import ExpenseItem from "./ExpenseItem";
 
 const ExpenseList = ({ data }) => {
   return (
-    <>
+    <div className="bg-dark">
       {data.map((item) => (
         <ExpenseItem key={item.id} data={item} />
       ))}
-    </>
+    </div>
   );
 };
 

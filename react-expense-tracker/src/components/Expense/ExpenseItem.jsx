@@ -1,28 +1,36 @@
-import "./Expense.css";
 import PropTypes from "prop-types";
 
 import Card from "../UI/Card";
+import ExpenseDate from "./ExpenseDate";
 
 const ExpenseItem = ({ data }) => {
   const currDate = data.date;
-  const currYear = currDate.getFullYear();
-  const currMonth = currDate.toLocaleString("default", { month: "long" });
-  const currDateVal = currDate.getDate();
+
+  const clickHandler = () => {
+    console.log(`ExpenseId : ${data.id}`);
+  };
 
   return (
-    <Card className="expense-item-container bg-secondary">
-      <div className="date-container">
-        <span className="date-month">{currMonth}</span>
-        <span className="date-year">{currYear}</span>
-        <span className="date">{currDateVal}</span>
-      </div>
-      <div className="expense-desc">
-        <h2 className="expense-desc__title">{data.title}</h2>
-        <div className="expense-amount">
-          <span className="expense-curr">$</span>
-          {data.amount}
+    <Card className="bg-secondary py-3 px-5 my-3">
+      <div className="row">
+        <div className="d-flex align-items-center gap-2">
+          <div className="col-md-3 col-sm-3 w-25">
+            <ExpenseDate currDate={currDate} />
+          </div>
+          <div className="col-md-6 col-sm-6">
+            <h2 className="text-light" onClick={clickHandler}>
+              {data.title}
+            </h2>
+          </div>
+          <div className="col-md-3 col-sm-3 ms-auto">
+            <div className="btn btn-primary w-100 p-3 rounded-3 fs-4 fw-bold">
+              <span>$ {data.amount}</span>
+            </div>
+          </div>
         </div>
       </div>
+
+      <div className="expense-desc"></div>
     </Card>
   );
 };
