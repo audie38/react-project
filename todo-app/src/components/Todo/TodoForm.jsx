@@ -1,20 +1,13 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import Card from "../UI/Card";
 import Modal from "../UI/Modal";
 
 const TodoForm = ({ onAddTodo }) => {
-  const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("");
   const [error, setError] = useState(null);
 
-  const titleHandler = (event) => {
-    setTitle(event.target.value);
-  };
-
-  const descHandler = (event) => {
-    setDesc(event.target.value);
-  };
+  const titleInput = useRef();
+  const descInput = useRef();
 
   const errorHandler = () => {
     setError(null);
@@ -22,6 +15,9 @@ const TodoForm = ({ onAddTodo }) => {
 
   const showHandler = (e) => {
     e.preventDefault();
+
+    const title = titleInput.current.value;
+    const desc = descInput.current.value;
 
     if (title.trim().length === 0 || desc.trim().length === 0) {
       setError({
@@ -36,8 +32,8 @@ const TodoForm = ({ onAddTodo }) => {
       desc: desc,
     });
 
-    setTitle("");
-    setDesc("");
+    titleInput.current.value = "";
+    descInput.current.value = "";
   };
 
   return (
@@ -47,11 +43,11 @@ const TodoForm = ({ onAddTodo }) => {
         <form onSubmit={showHandler}>
           <div className="input-group">
             <label htmlFor="title">Title</label>
-            <input type="text" id="title" value={title} onChange={titleHandler} />
+            <input type="text" id="title" ref={titleInput} />
           </div>
           <div className="input-group">
             <label htmlFor="Desc">Description</label>
-            <textarea rows={5} id="Desc" value={desc} onChange={descHandler} />
+            <textarea rows={5} id="Desc" ref={descInput} />
           </div>
           <button className="btn btn-add" type="submit">
             Add Todo
