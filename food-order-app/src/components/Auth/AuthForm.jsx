@@ -1,24 +1,44 @@
 import PropTypes from "prop-types";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
+
+const emailReducer = (state, action) => {
+  if (action.type === "EMAIL_VALUE") {
+    return { value: action.val, isValid: action.val.includes("@") };
+  }
+  return { value: "", isValid: false };
+};
+
+const passwordReducer = (state, action) => {
+  if (action.type === "PASSWORD_VALUE") {
+    return { value: action.val, isValid: action.val.length > 6 };
+  }
+  return { value: "", isValid: false };
+};
 
 export default function AuthForm({ onLogin }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [emailState, dispatchEmail] = useReducer(emailReducer, { value: "", isValid: false });
+  const [passwordState, dispatchPassword] = useReducer(passwordReducer, { value: "", isValid: false });
   const [isFormValid, setIsFormValid] = useState(false);
 
   const emailChangeHandler = (event) => {
-    setEmail(event.target.value);
+    dispatchEmail({
+      type: "EMAIL_VALUE",
+      val: event.target.value,
+    });
   };
 
   const passwordChangeHandler = (event) => {
-    setPassword(event.target.value);
+    dispatchPassword({
+      type: "PASSWORD_VALUE",
+      val: event.target.value,
+    });
   };
 
   const login = (e) => {
     e.preventDefault();
     const credential = {
-      email,
-      password,
+      email: emailState.value,
+      password: passwordState.value,
     };
     if (isFormValid) {
       onLogin(credential);
@@ -26,9 +46,9 @@ export default function AuthForm({ onLogin }) {
   };
 
   useEffect(() => {
-    setIsFormValid(email.includes("@") && password.trim().length > 6);
+    setIsFormValid(emailState.isValid && passwordState.isValid);
     return () => {};
-  }, [email, password]);
+  }, [emailState, passwordState]);
 
   return (
     <>
@@ -41,7 +61,7 @@ export default function AuthForm({ onLogin }) {
               </label>
             </div>
             <div className="col-md-9">
-              <input className="form-control" type="email" name="email" id="email" value={email} onChange={emailChangeHandler} />
+              <input className="form-control" type="email" name="email" id="email" value={emailState.value} onChange={emailChangeHandler} />
             </div>
           </div>
         </div>
@@ -53,7 +73,7 @@ export default function AuthForm({ onLogin }) {
               </label>
             </div>
             <div className="col-md-9">
-              <input className="form-control" type="password" name="password" id="password" value={password} onChange={passwordChangeHandler} />
+              <input className="form-control" type="password" name="password" id="password" value={passwordState.value} onChange={passwordChangeHandler} />
             </div>
           </div>
         </div>
