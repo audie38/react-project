@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import AuthContext from "./store/auth-context";
+
 import NavigationBar from "./components/UI/NavigationBar";
 import Card from "./components/UI/Card";
 import Home from "./components/Home";
@@ -25,11 +27,15 @@ export default function App() {
   };
 
   return (
-    <div>
-      <NavigationBar isAuth={isAuth} onLogout={logoutHandler} />
+    <AuthContext.Provider
+      value={{
+        isLoggedIn: isAuth,
+      }}
+    >
+      <NavigationBar onLogout={logoutHandler} />
       <div className="container d-flex justify-content-center my-5">
         <Card className="w-75">{isAuth ? <Home /> : <AuthForm onLogin={loginHandler} />}</Card>
       </div>
-    </div>
+    </AuthContext.Provider>
   );
 }
