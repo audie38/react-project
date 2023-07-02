@@ -45,10 +45,13 @@ export default function AuthForm({ onLogin }) {
     }
   };
 
+  const { isValid: emailIsValid } = emailState;
+  const { isValid: passwordIsValid } = passwordState;
+
   useEffect(() => {
-    setIsFormValid(emailState.isValid && passwordState.isValid);
+    setIsFormValid(emailIsValid && passwordIsValid);
     return () => {};
-  }, [emailState, passwordState]);
+  }, [emailIsValid, passwordIsValid]);
 
   return (
     <>
