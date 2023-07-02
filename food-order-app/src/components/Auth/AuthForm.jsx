@@ -1,5 +1,5 @@
-import PropTypes from "prop-types";
-import { useState, useEffect, useReducer } from "react";
+import { useState, useEffect, useReducer, useContext } from "react";
+import AuthContext from "../../store/auth-context";
 
 const emailReducer = (state, action) => {
   if (action.type === "EMAIL_VALUE") {
@@ -15,7 +15,9 @@ const passwordReducer = (state, action) => {
   return { value: "", isValid: false };
 };
 
-export default function AuthForm({ onLogin }) {
+export default function AuthForm() {
+  const ctx = useContext(AuthContext);
+
   const [emailState, dispatchEmail] = useReducer(emailReducer, { value: "", isValid: false });
   const [passwordState, dispatchPassword] = useReducer(passwordReducer, { value: "", isValid: false });
   const [isFormValid, setIsFormValid] = useState(false);
@@ -41,7 +43,7 @@ export default function AuthForm({ onLogin }) {
       password: passwordState.value,
     };
     if (isFormValid) {
-      onLogin(credential);
+      ctx.onLogin(credential);
     }
   };
 
@@ -87,7 +89,3 @@ export default function AuthForm({ onLogin }) {
     </>
   );
 }
-
-AuthForm.propTypes = {
-  onLogin: PropTypes.func.isRequired,
-};

@@ -30,11 +30,13 @@ export default function App() {
     <AuthContext.Provider
       value={{
         isLoggedIn: isAuth,
+        onLogout: logoutHandler,
+        onLogin: loginHandler,
       }}
     >
-      <NavigationBar onLogout={logoutHandler} />
+      <NavigationBar />
       <div className="container d-flex justify-content-center my-5">
-        <Card className="w-75">{isAuth ? <Home /> : <AuthForm onLogin={loginHandler} />}</Card>
+        <Card className="w-75">{isAuth ? <Home /> : <AuthForm />}</Card>
       </div>
     </AuthContext.Provider>
   );
