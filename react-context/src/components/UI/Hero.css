@@ -1,0 +1,7 @@
+.hero {
+  background: url("../../assets/meals.png") center center no-repeat;
+  background-size: cover;
+  height: 50vh;
+  transform: translateY(-35%);
+  z-index: -999;
+}
