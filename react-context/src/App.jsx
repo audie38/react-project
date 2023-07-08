@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import NavigationBar from "./components/UI/NavigationBar";
 import Home from "./components/Home";
-import Cart from "./components/Cart";
+import Cart from "./components/Cart/Cart";
 
 import MenuList from "./assets/data.json";
 
@@ -21,10 +21,6 @@ export default function App() {
     setCartItem((prevData) => [...prevData, entry]);
   };
 
-  const updateCartItem = (cart) => {
-    setCartItem(cart);
-  };
-
   const toggleCartHandler = () => {
     setShowCart(!showCart);
   };
@@ -36,7 +32,7 @@ export default function App() {
   return (
     <React.Fragment>
       <NavigationBar onShow={toggleCartHandler} itemCount={cartItem.length} />
-      {showCart ? <Cart data={cartItem} onHide={hideCartHandler} onUpdate={updateCartItem} /> : <Home menu={menuItem} onAdd={cartItemHandler} />}
+      {showCart ? <Cart data={cartItem} onHide={hideCartHandler} /> : <Home menu={menuItem} onAdd={cartItemHandler} />}
     </React.Fragment>
   );
 }
