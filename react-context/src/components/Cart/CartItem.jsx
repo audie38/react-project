@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const CartItem = ({ data, onUpdate }) => {
+const CartItem = ({ data, onUpdate, onUpdateCart }) => {
   const addItem = () => {
     onUpdate(parseFloat(data.price));
     setAddQtyHandler();
@@ -21,6 +21,11 @@ const CartItem = ({ data, onUpdate }) => {
       setItemQty(0);
     }
   };
+
+  useEffect(() => {
+    const updatedObj = { ...data, qty: itemQty };
+    onUpdateCart(updatedObj);
+  }, [data, itemQty, onUpdateCart]);
 
   return (
     <li className="list-group-item border-danger">
@@ -46,6 +51,7 @@ const CartItem = ({ data, onUpdate }) => {
 CartItem.propTypes = {
   data: PropTypes.object.isRequired,
   onUpdate: PropTypes.func.isRequired,
+  onUpdateCart: PropTypes.func.isRequired,
 };
 
 export default CartItem;

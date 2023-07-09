@@ -21,6 +21,17 @@ export default function App() {
     setCartItem((prevData) => [...prevData, entry]);
   };
 
+  const updateCartItemHandler = (updatedItem) => {
+    const existingItem = cartItem.find((item) => item.id === updatedItem.id);
+    if (existingItem) {
+      const existingItemId = existingItem.id;
+      if (parseInt(updatedItem.qty) <= 0) {
+        const newCartItem = cartItem.filter((item) => item.id !== existingItemId);
+        setCartItem([...newCartItem]);
+      }
+    }
+  };
+
   const toggleCartHandler = () => {
     setShowCart(!showCart);
   };
@@ -32,7 +43,7 @@ export default function App() {
   return (
     <React.Fragment>
       <NavigationBar onShow={toggleCartHandler} itemCount={cartItem.length} />
-      {showCart ? <Cart data={cartItem} onHide={hideCartHandler} /> : <Home menu={menuItem} onAdd={cartItemHandler} />}
+      {showCart ? <Cart data={cartItem} onHide={hideCartHandler} onUpdateItem={updateCartItemHandler} /> : <Home menu={menuItem} onAdd={cartItemHandler} />}
     </React.Fragment>
   );
 }
