@@ -29,13 +29,13 @@ const CartItem = ({ data, onUpdate, onUpdateCart }) => {
 
   return (
     <li className="list-group-item border-danger">
-      <div className="row d-flex align-items-center">
-        <div className="col-md-8">
+      <div className="row d-flex flex-wrap align-items-center">
+        <div className="col-xl-8 col-md-6">
           <h3 className="h3">{data.title}</h3>
           <p className="text-danger fw-bold d-inline me-5">$ {data.price}</p>
           <span className="badge text-bg-light px-3 py-2"> x{itemQty}</span>
         </div>
-        <div className="col-md-4 ms-auto">
+        <div className="col-xl-4 col-md-6 ms-auto">
           <button onClick={removeItem} className="btn btn-outline-danger rounded-1 px-5 mx-3">
             -
           </button>

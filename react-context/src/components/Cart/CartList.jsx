@@ -25,10 +25,10 @@ const CartList = ({ data, onClose, onUpdateItem }) => {
         {cartItem.length > 0 ? cartItem.map((item) => <CartItem key={item.id} data={item} onUpdate={setTotalPriceHandler} onUpdateCart={onUpdateItem} />) : <h4></h4>}
         <li className="list-group-item my-3 border-0">
           <div className="row d-flex justify-content-between">
-            <div className="col-md-10">
+            <div className="col-xl-10 col-md-8">
               <h3 className="h3 fw-bold">Total Amount</h3>
             </div>
-            <div className="col-md-2">
+            <div className="col-xl-2 col-md-4">
               <h3 className="h3 fw-bold">$ {totalPrice}</h3>
             </div>
           </div>
