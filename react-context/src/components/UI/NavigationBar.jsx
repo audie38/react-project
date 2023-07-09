@@ -1,7 +1,12 @@
+import { useContext } from "react";
 import PropTypes from "prop-types";
+import CartContext from "../../store/CartContext";
+
 import Badge from "./Badge";
 
-export default function NavigationBar({ onShow, itemCount }) {
+export default function NavigationBar({ toggle }) {
+  const ctx = useContext(CartContext);
+
   return (
     <nav className="navbar navbar-expand-lg bg-danger navbar-dark">
       <div className="container">
@@ -13,10 +18,10 @@ export default function NavigationBar({ onShow, itemCount }) {
         </button>
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav ms-auto">
-            <button onClick={onShow} className="btn btn-light text-danger rounded-5">
+            <button onClick={toggle} className="btn btn-light text-danger rounded-5">
               <i className="fa-solid fa-cart-shopping me-2"></i>
               Cart
-              <Badge className={"ms-2"} text={itemCount} />
+              <Badge className={"ms-2"} text={ctx.items.length} />
             </button>
           </div>
         </div>
@@ -26,6 +31,5 @@ export default function NavigationBar({ onShow, itemCount }) {
 }
 
 NavigationBar.propTypes = {
-  onShow: PropTypes.func.isRequired,
-  itemCount: PropTypes.number.isRequired,
+  toggle: PropTypes.func.isRequired,
 };

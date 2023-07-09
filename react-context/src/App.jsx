@@ -1,49 +1,25 @@
-import React, { useState } from "react";
 import NavigationBar from "./components/UI/NavigationBar";
 import Home from "./components/Home";
 import Cart from "./components/Cart/Cart";
 
+import CartProvider from "./store/CartProvider";
 import MenuList from "./assets/data.json";
+import { useState } from "react";
 
 export default function App() {
   const menuItem = MenuList;
-  const [cartItem, setCartItem] = useState([]);
-  const [showCart, setShowCart] = useState(false);
-
-  const cartItemHandler = (data) => {
-    let entry = data;
-    const existingItem = cartItem.find((item) => item.id === data.id);
-    if (existingItem) {
-      setCartItem([...cartItem.filter((item) => item.id !== existingItem.id)]);
-      entry = { ...existingItem, qty: existingItem.qty + data.qty };
-      console.log("Entry: ", entry);
-    }
-    setCartItem((prevData) => [...prevData, entry]);
+  const [show, setShow] = useState(false);
+  const setShowHandler = () => {
+    setShow(!show);
   };
-
-  const updateCartItemHandler = (updatedItem) => {
-    const existingItem = cartItem.find((item) => item.id === updatedItem.id);
-    if (existingItem) {
-      const existingItemId = existingItem.id;
-      if (parseInt(updatedItem.qty) <= 0) {
-        const newCartItem = cartItem.filter((item) => item.id !== existingItemId);
-        setCartItem([...newCartItem]);
-      }
-    }
-  };
-
-  const toggleCartHandler = () => {
-    setShowCart(!showCart);
-  };
-
   const hideCartHandler = () => {
-    setShowCart(false);
+    setShow(false);
   };
 
   return (
-    <React.Fragment>
-      <NavigationBar onShow={toggleCartHandler} itemCount={cartItem.length} />
-      {showCart ? <Cart data={cartItem} onHide={hideCartHandler} onUpdateItem={updateCartItemHandler} /> : <Home menu={menuItem} onAdd={cartItemHandler} />}
-    </React.Fragment>
+    <CartProvider>
+      <NavigationBar toggle={setShowHandler} />
+      {show ? <Cart onClose={hideCartHandler} /> : <Home menu={menuItem} />}
+    </CartProvider>
   );
 }
