@@ -1,25 +1,22 @@
 import { useState, useEffect, useReducer, useContext } from "react";
 import AuthContext from "../../store/auth-context";
 
-const emailReducer = (state, action) => {
-  if (action.type === "EMAIL_VALUE") {
-    return { value: action.val, isValid: action.val.includes("@") };
+const credentialReducer = (state, action) => {
+  switch (action.type) {
+    case "EMAIL_VALUE":
+      return { value: action.val, isValid: action.val.includes("@") };
+    case "PASSWORD_VALUE":
+      return { value: action.val, isValid: action.val.length > 6 };
+    default:
+      return { value: "", isValid: false };
   }
-  return { value: "", isValid: false };
-};
-
-const passwordReducer = (state, action) => {
-  if (action.type === "PASSWORD_VALUE") {
-    return { value: action.val, isValid: action.val.length > 6 };
-  }
-  return { value: "", isValid: false };
 };
 
 export default function AuthForm() {
   const ctx = useContext(AuthContext);
 
-  const [emailState, dispatchEmail] = useReducer(emailReducer, { value: "", isValid: false });
-  const [passwordState, dispatchPassword] = useReducer(passwordReducer, { value: "", isValid: false });
+  const [emailState, dispatchEmail] = useReducer(credentialReducer, { value: "", isValid: false });
+  const [passwordState, dispatchPassword] = useReducer(credentialReducer, { value: "", isValid: false });
   const [isFormValid, setIsFormValid] = useState(false);
 
   const emailChangeHandler = (event) => {
