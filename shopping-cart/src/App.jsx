@@ -40,6 +40,23 @@ export default function App() {
     updateProductData(item);
   };
 
+  const removeItemFromCart = (prod) => {
+    let updatedCart = [...cartItem];
+    updatedCart = updatedCart.filter((item) => item.id !== +prod.id);
+    setCartItem(updatedCart);
+    // Restore Product Stock
+    let updatedItem;
+    let updatedList = [];
+    const existingItemIdx = productData.findIndex((item) => item.id === +prod.id);
+    const existingItem = productData[existingItemIdx];
+    if (existingItem) {
+      updatedItem = { ...existingItem, stock: parseInt(existingItem.stock) + parseInt(prod.amount) };
+      updatedList = [...productData];
+      updatedList[existingItemIdx] = updatedItem;
+      setProductData(updatedList);
+    }
+  };
+
   return (
     <>
       <Navbar cartItemCount={cartItem.length} />
@@ -47,7 +64,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Product data={productData} onAddToCart={addToCartHandler} />} />
           <Route path="/product/:slug" element={<ProductDetail data={productData} onAddToCart={addToCartHandler} />} />
-          <Route path="/cart" element={<Cart />} />
+          <Route path="/cart" element={<Cart data={cartItem} removeItem={removeItemFromCart} />} />
         </Routes>
       </div>
     </>
