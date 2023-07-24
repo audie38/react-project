@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function Carousel(props) {
   const sliderData = props?.data?.slice(1, props.data.length - 1);
   return (
-    <div id="carouselExample" className="carousel carousel-dark slide">
+    <div id="carouselExample" className="carousel carousel-dark slide" data-bs-ride="carousel">
       <div className="carousel-inner">
         <Link to={`/product/${props.data[0].slug}`} className="carousel-item active">
           <img src={props.data[0].img} className="d-block w-100 object-fit-contain" alt={props.data[0].name} style={{ maxHeight: 300, objectFit: "cover" }} />
