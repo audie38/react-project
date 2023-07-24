@@ -36,7 +36,6 @@ export default function App() {
     } else {
       setCartItem((existing) => [...existing, item]);
     }
-
     updateProductData(item);
   };
 

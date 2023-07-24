@@ -10,6 +10,11 @@ const CartItem = (props) => {
   const [cartItemQty, setCartItemQty] = useState(props.item.amount);
   const setCartItemQtyHandler = (event) => {
     const inputVal = event.target.value;
+    if (inputVal > cartItemQty) {
+      props.onAdd((inputVal - cartItemQty) * parseFloat(props.item?.price));
+    } else {
+      props.onMin((cartItemQty - inputVal) * parseFloat(props.item?.price));
+    }
     if (inputVal >= props.item.stock) {
       setCartItemQty(props.item.stock);
     } else {
@@ -19,9 +24,11 @@ const CartItem = (props) => {
   const addItemAmount = () => {
     if (cartItemQty + 1 <= props.item.stock) {
       setCartItemQty((prev) => prev + 1);
+      props.onAdd(parseFloat(props.item?.price));
     }
   };
   const minItemAmount = () => {
+    props.onMin(parseFloat(props.item?.price));
     if (cartItemQty - 1 >= 1) {
       setCartItemQty((prev) => prev - 1);
     } else {
@@ -33,7 +40,7 @@ const CartItem = (props) => {
       ...props.item,
       amount: cartItemQty,
     };
-    console.log("Remove: ", data);
+    props.onMin(cartItemQty * parseFloat(props.item?.price));
     props.removeItem(data);
   };
 
@@ -71,11 +78,15 @@ const CartItem = (props) => {
 CartItem.propTypes = {
   item: PropTypes.object.isRequired,
   removeItem: PropTypes.func.isRequired,
+  onAdd: PropTypes.func.isRequired,
+  onMin: PropTypes.func.isRequired,
 };
 
 CartItem.defaultProps = {
   item: {},
   removeItem: () => {},
+  onAdd: () => {},
+  onMin: () => {},
 };
 
 export default CartItem;
