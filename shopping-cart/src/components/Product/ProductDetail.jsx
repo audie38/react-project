@@ -25,6 +25,23 @@ const ProductDetail = (props) => {
     }
   };
 
+  const qtyChangeHandler = (event) => {
+    const inputVal = event.target.value;
+    if (inputVal > product?.stock) {
+      setQty(product.stock);
+    } else {
+      setQty(inputVal);
+    }
+  };
+
+  const addItem = () => {
+    const data = {
+      ...product,
+      amount: qty,
+    };
+    props.onAddToCart(data);
+  };
+
   return (
     <>
       {product ? (
@@ -42,13 +59,11 @@ const ProductDetail = (props) => {
               <ul className="list-group list-group-flush">
                 <li className="list-group-item fw-bold">Quantity</li>
                 <li className="list-group-item d-flex justify-content-between align-items-center">
-                  <div className="input-group w-25">
+                  <div className="input-group w-50">
                     <button onClick={minQtyHandler} disabled={isDisabled} className="btn btn-light">
                       -
                     </button>
-                    <span disabled={isDisabled} className="form-control">
-                      {qty}
-                    </span>
+                    <input disabled={isDisabled} className="form-control text-center" type="number" min={1} max={product.stock} value={qty} onChange={qtyChangeHandler} />
                     <button onClick={addQtyHandler} disabled={isDisabled} className="btn btn-light">
                       +
                     </button>
@@ -62,7 +77,9 @@ const ProductDetail = (props) => {
                       Add To Cart
                     </button>
                   ) : (
-                    <button className="btn btn-danger w-100">Add To Cart</button>
+                    <button onClick={addItem} className="btn btn-danger w-100">
+                      Add To Cart
+                    </button>
                   )}
                 </li>
               </ul>
@@ -80,10 +97,12 @@ const ProductDetail = (props) => {
 
 ProductDetail.propTypes = {
   data: PropTypes.array.isRequired,
+  onAddToCart: PropTypes.func.isRequired,
 };
 
 ProductDetail.defaultProps = {
   data: [],
+  onAddToCart: () => {},
 };
 
 export default ProductDetail;

@@ -8,6 +8,15 @@ const ProductItem = (props) => {
     currency: "IDR",
   });
   const priceAmt = formatter.format(props.data?.price.toFixed(2));
+
+  const addItem = () => {
+    const data = {
+      ...props.data,
+      amount: 1,
+    };
+    props.onAddToCart(data);
+  };
+
   return (
     <div className="col-xl-4 col-md-6 col-sm-12 my-3">
       <Card className="py-2 h-100 d-flex flex-column justify-content-center">
@@ -20,7 +29,9 @@ const ProductItem = (props) => {
         </Link>
         <div className="d-flex justify-content-center mx-3">
           {props.data?.stock > 0 ? (
-            <button className="btn btn-danger w-100">Add To Cart</button>
+            <button onClick={addItem} className="btn btn-danger w-100">
+              Add To Cart
+            </button>
           ) : (
             <button className="btn btn-secondary w-100" disabled>
               Add To Cart
@@ -34,10 +45,12 @@ const ProductItem = (props) => {
 
 ProductItem.propTypes = {
   data: PropTypes.object.isRequired,
+  onAddToCart: PropTypes.func.isRequired,
 };
 
 ProductItem.defaultProps = {
   data: {},
+  onAddToCart: () => {},
 };
 
 export default ProductItem;

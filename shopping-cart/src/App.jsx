@@ -8,16 +8,15 @@ import data from "./assets/data.json";
 
 export default function App() {
   const [productData, setProductData] = useState([...data]);
+  const [cartItem, setCartItem] = useState([]);
 
   const updateProductData = (prod) => {
-    const existingProdIdx = productData.findIndex((item) => item.id === prod.id);
+    const existingProdIdx = productData.findIndex((item) => item.id === +prod.id);
     const existingProd = productData[existingProdIdx];
     let updatedList = [];
-    if (!existingProd) {
+    if (existingProd) {
       let updatedProd;
-      if (existingProd.stock === 1) {
-        updatedList = productData.filter((item) => item.id !== prod.id);
-      } else {
+      if (existingProd.stock >= 1) {
         updatedProd = { ...existingProd, stock: existingProd.stock - prod.amount };
         updatedList = [...productData];
         updatedList[existingProdIdx] = updatedProd;
@@ -26,13 +25,28 @@ export default function App() {
     }
   };
 
+  const addToCartHandler = (item) => {
+    const existingCartItemIdx = cartItem.findIndex((prod) => prod.id === +item.id);
+    const existingCartItem = cartItem[existingCartItemIdx];
+    if (existingCartItem) {
+      let updatedCartList = [...cartItem];
+      let updatedItem = { ...existingCartItem, amount: parseInt(existingCartItem.amount) + parseInt(item.amount) };
+      updatedCartList[existingCartItemIdx] = updatedItem;
+      setCartItem(updatedCartList);
+    } else {
+      setCartItem((existing) => [...existing, item]);
+    }
+
+    updateProductData(item);
+  };
+
   return (
     <>
-      <Navbar />
+      <Navbar cartItemCount={cartItem.length} />
       <div className="container my-5">
         <Routes>
-          <Route path="/" element={<Product data={productData} />} />
-          <Route path="/product/:slug" element={<ProductDetail data={productData} onAddToCart={updateProductData} />} />
+          <Route path="/" element={<Product data={productData} onAddToCart={addToCartHandler} />} />
+          <Route path="/product/:slug" element={<ProductDetail data={productData} onAddToCart={addToCartHandler} />} />
           <Route path="/cart" element={<Cart />} />
         </Routes>
       </div>
