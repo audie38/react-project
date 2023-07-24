@@ -32,7 +32,7 @@ export default function App() {
       <div className="container my-5">
         <Routes>
           <Route path="/" element={<Product data={productData} />} />
-          <Route path="/product/:id" element={<ProductDetail onAddToCart={updateProductData} />} />
+          <Route path="/product/:slug" element={<ProductDetail data={productData} onAddToCart={updateProductData} />} />
           <Route path="/cart" element={<Cart />} />
         </Routes>
       </div>
