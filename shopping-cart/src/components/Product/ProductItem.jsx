@@ -1,20 +1,19 @@
 import PropTypes from "prop-types";
 import Card from "../UI/Card";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import CartContext from "../../store/CartContext";
 
 const ProductItem = (props) => {
-  const formatter = new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-  });
-  const priceAmt = formatter.format(props.data?.price.toFixed(2));
+  const ctx = useContext(CartContext);
+  const priceAmt = ctx.currencyFormatter(props.data?.price);
 
   const addItem = () => {
     const data = {
       ...props.data,
       amount: 1,
     };
-    props.onAddToCart(data);
+    ctx.onAddToCart(data);
   };
 
   return (
@@ -45,12 +44,10 @@ const ProductItem = (props) => {
 
 ProductItem.propTypes = {
   data: PropTypes.object.isRequired,
-  onAddToCart: PropTypes.func.isRequired,
 };
 
 ProductItem.defaultProps = {
   data: {},
-  onAddToCart: () => {},
 };
 
 export default ProductItem;

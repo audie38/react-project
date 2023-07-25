@@ -1,24 +1,16 @@
 import ProductList from "./ProductList";
 import Carousel from "../UI/Carousel";
-import PropTypes from "prop-types";
+import { useContext } from "react";
+import CartContext from "../../store/CartContext";
 
-const Product = (props) => {
+const Product = () => {
+  const ctx = useContext(CartContext);
   return (
     <div>
-      <Carousel data={props.data} />
-      <ProductList products={props.data} onAddToCart={props.onAddToCart} />
+      <Carousel data={ctx.products} />
+      <ProductList />
     </div>
   );
-};
-
-Product.propTypes = {
-  data: PropTypes.array.isRequired,
-  onAddToCart: PropTypes.func.isRequired,
-};
-
-Product.defaultProps = {
-  data: [],
-  onAddToCart: () => {},
 };
 
 export default Product;

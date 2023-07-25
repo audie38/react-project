@@ -4,6 +4,7 @@ import React from "react";
 const CartContext = React.createContext({
   products: [],
   carts: [],
+  cartItemCount: 0,
   onUpdateProduct: (prod) => {},
   onAddToCart: (prod) => {},
   onRestoreProduct: (id, restoredAmount) => {},

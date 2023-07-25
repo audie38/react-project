@@ -1,15 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useParams } from "react-router-dom";
-import PropTypes from "prop-types";
+import CartContext from "../../store/CartContext";
 
-const ProductDetail = (props) => {
+const ProductDetail = () => {
+  const ctx = useContext(CartContext);
   const productId = useParams().slug;
-  const product = props.data.filter((item) => item.slug === productId)[0];
-  const formatter = new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-  });
-  const priceAmt = formatter.format(product?.price.toFixed(2));
+  const product = ctx.products.filter((item) => item.slug === productId)[0];
+  const priceAmt = ctx.currencyFormatter(product?.price);
   const isDisabled = product?.stock === 0;
   const [qty, setQty] = useState(0);
 
@@ -39,7 +36,7 @@ const ProductDetail = (props) => {
       ...product,
       amount: qty,
     };
-    props.onAddToCart(data);
+    ctx.onAddToCart(data);
   };
 
   return (
@@ -93,16 +90,6 @@ const ProductDetail = (props) => {
       )}
     </>
   );
-};
-
-ProductDetail.propTypes = {
-  data: PropTypes.array.isRequired,
-  onAddToCart: PropTypes.func.isRequired,
-};
-
-ProductDetail.defaultProps = {
-  data: [],
-  onAddToCart: () => {},
 };
 
 export default ProductDetail;

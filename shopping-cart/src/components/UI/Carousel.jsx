@@ -7,11 +7,11 @@ export default function Carousel(props) {
     <div id="carouselExample" className="carousel carousel-dark slide" data-bs-ride="carousel">
       <div className="carousel-inner">
         <Link to={`/product/${props.data[0].slug}`} className="carousel-item active">
-          <img src={props.data[0].img} className="d-block w-100 object-fit-contain" alt={props.data[0].name} style={{ maxHeight: 300, objectFit: "cover" }} />
+          <img src={props.data[0].img} className="d-block w-100 object-fit-contain" alt={props.data[0].name} style={{ height: 300, objectFit: "cover" }} />
         </Link>
         {sliderData.map((item) => (
           <Link to={`/product/${item.slug}`} key={item.id} className="carousel-item ">
-            <img src={item.img} className="d-block w-100 object-fit-contain" alt={item.name} style={{ maxHeight: 300, objectFit: "cover" }} />
+            <img src={item.img} className="d-block w-100 object-fit-contain" alt={item.name} style={{ height: 300, objectFit: "cover" }} />
           </Link>
         ))}
       </div>

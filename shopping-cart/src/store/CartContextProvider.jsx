@@ -80,6 +80,7 @@ export default function CartContextProvider(props) {
   const context = {
     products: productData,
     carts: cartItem,
+    cartItemCount: cartItem.length,
     onUpdateProduct: updateProductData,
     onAddToCart: addToCartHandler,
     onRestoreProduct: restoreProductData,

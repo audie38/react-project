@@ -1,25 +1,23 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import CartContext from "../../store/CartContext";
 
 const CartItem = (props) => {
-  const formatter = new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-  });
-  const priceAmt = formatter.format(props.item?.price.toFixed(2));
+  const ctx = useContext(CartContext);
+  const priceAmt = ctx.currencyFormatter(props.item?.price);
   const [cartItemQty, setCartItemQty] = useState(props.item.amount);
   const setCartItemQtyHandler = (event) => {
     const inputVal = event.target.value;
     if (inputVal > cartItemQty) {
       props.onAdd((inputVal - cartItemQty) * parseFloat(props.item?.price));
-      props.onUpdate({
+      ctx.onUpdateCartItem({
         ...props.item,
         amount: inputVal,
         restored: inputVal - cartItemQty,
       });
     } else {
       props.onMin((cartItemQty - inputVal) * parseFloat(props.item?.price));
-      props.onUpdate({
+      ctx.onUpdateCartItem({
         ...props.item,
         amount: inputVal,
         restored: cartItemQty - inputVal,
@@ -33,7 +31,7 @@ const CartItem = (props) => {
   };
   const addItemAmount = () => {
     if (cartItemQty + 1 <= props.item.stock) {
-      props.onUpdate({
+      ctx.onUpdateCartItem({
         ...props.item,
         amount: cartItemQty + 1,
         restored: -1,
@@ -45,7 +43,7 @@ const CartItem = (props) => {
   const minItemAmount = () => {
     props.onMin(parseFloat(props.item?.price));
     if (cartItemQty - 1 >= 1) {
-      props.onUpdate({
+      ctx.onUpdateCartItem({
         ...props.item,
         amount: cartItemQty - 1,
         restored: 1,
@@ -61,7 +59,7 @@ const CartItem = (props) => {
       amount: cartItemQty,
     };
     props.onMin(cartItemQty * parseFloat(props.item?.price));
-    props.removeItem(data);
+    ctx.onRemoveItemFromCart(data);
   };
 
   return (
@@ -97,18 +95,14 @@ const CartItem = (props) => {
 
 CartItem.propTypes = {
   item: PropTypes.object.isRequired,
-  removeItem: PropTypes.func.isRequired,
   onAdd: PropTypes.func.isRequired,
   onMin: PropTypes.func.isRequired,
-  onUpdate: PropTypes.func.isRequired,
 };
 
 CartItem.defaultProps = {
   item: {},
-  removeItem: () => {},
   onAdd: () => {},
   onMin: () => {},
-  onUpdate: () => {},
 };
 
 export default CartItem;
