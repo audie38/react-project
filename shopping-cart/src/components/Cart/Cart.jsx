@@ -30,7 +30,7 @@ const Cart = (props) => {
               <h1>Cart</h1>
             </li>
             {props.data.map((item) => (
-              <CartItem key={item.id} item={item} onAdd={addTotalCartHandler} onMin={minTotalCartHandler} removeItem={props.removeItem} />
+              <CartItem key={item.id} item={item} onAdd={addTotalCartHandler} onMin={minTotalCartHandler} onUpdate={props.onUpdate} removeItem={props.removeItem} />
             ))}
           </ul>
         </Card>
@@ -49,11 +49,13 @@ const Cart = (props) => {
 Cart.propTypes = {
   data: PropTypes.array.isRequired,
   removeItem: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired,
 };
 
 Cart.defaultProps = {
   data: [],
   removeItem: () => {},
+  onUpdate: () => {},
 };
 
 export default Cart;

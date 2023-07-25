@@ -39,20 +39,35 @@ export default function App() {
     updateProductData(item);
   };
 
+  const restoreProductData = (id, restoredAmount) => {
+    let updatedItem;
+    let updatedList = [];
+    const existingItemIdx = productData.findIndex((item) => item.id === +id);
+    const existingItem = productData[existingItemIdx];
+    if (existingItem) {
+      updatedItem = { ...existingItem, stock: parseInt(existingItem.stock) + parseInt(restoredAmount) };
+      updatedList = [...productData];
+      updatedList[existingItemIdx] = updatedItem;
+      setProductData(updatedList);
+    }
+  };
+
   const removeItemFromCart = (prod) => {
     let updatedCart = [...cartItem];
     updatedCart = updatedCart.filter((item) => item.id !== +prod.id);
     setCartItem(updatedCart);
-    // Restore Product Stock
-    let updatedItem;
-    let updatedList = [];
-    const existingItemIdx = productData.findIndex((item) => item.id === +prod.id);
-    const existingItem = productData[existingItemIdx];
+    restoreProductData(prod.id, prod.amount);
+  };
+
+  const updateCartItemQty = (item) => {
+    let existingItemIdx = cartItem.findIndex((prod) => prod.id === +item.id);
+    let existingItem = cartItem[existingItemIdx];
     if (existingItem) {
-      updatedItem = { ...existingItem, stock: parseInt(existingItem.stock) + parseInt(prod.amount) };
-      updatedList = [...productData];
+      let updatedItem = { ...existingItem, amount: item.amount };
+      let updatedList = [...cartItem];
       updatedList[existingItemIdx] = updatedItem;
-      setProductData(updatedList);
+      setCartItem(updatedList);
+      restoreProductData(item.id, item.restored);
     }
   };
 
@@ -63,7 +78,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Product data={productData} onAddToCart={addToCartHandler} />} />
           <Route path="/product/:slug" element={<ProductDetail data={productData} onAddToCart={addToCartHandler} />} />
-          <Route path="/cart" element={<Cart data={cartItem} removeItem={removeItemFromCart} />} />
+          <Route path="/cart" element={<Cart data={cartItem} onUpdate={updateCartItemQty} removeItem={removeItemFromCart} />} />
         </Routes>
       </div>
     </>
