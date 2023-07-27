@@ -7,12 +7,22 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [toggleMenu, setToggleMenu] = useState(false);
+
+  const showAddMoviesPage = () => {
+    setToggleMenu(true);
+  };
+
+  const hideAddMoviesPage = () => {
+    setToggleMenu(false);
+  };
 
   const fetchMoviesHandler = useCallback(async () => {
+    hideAddMoviesPage();
     setIsLoading(true);
     setError(null);
     try {
-      const result = await fetch("https://swapi.dev/api/films/", {
+      const result = await fetch(`${import.meta.env.VITE_API_BASE_URL}/films/`, {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -23,12 +33,12 @@ function App() {
         throw new Error("Something went wrong");
       }
       const data = await result.json();
-      const transformedData = data.results.map((movieData) => {
+      const transformedData = data.data.map((movieData) => {
         return {
-          id: movieData.episode_id,
+          id: movieData.id,
           title: movieData.title,
-          openingText: movieData.opening_crawl,
-          releaseDate: movieData.release_date,
+          openingText: movieData.openingText,
+          releaseDate: new Date(movieData.releaseDate).toLocaleDateString(),
         };
       });
       setMovies(transformedData);
@@ -38,22 +48,31 @@ function App() {
     setIsLoading(false);
   }, []);
 
-  const onAddMovie = (mv) => {
-    console.log(mv);
+  const onAddMovie = async (mv) => {
+    try {
+      const newMovie = await fetch(`${import.meta.env.VITE_API_BASE_URL}/films/`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(mv),
+      });
+      if (!newMovie.ok) {
+        throw new Error("Failed to Add");
+      }
+      await newMovie.json();
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   useEffect(() => {
     fetchMoviesHandler();
   }, [fetchMoviesHandler]);
 
-  return (
-    <React.Fragment>
-      <section>
-        <AddMovie onAddMovie={onAddMovie} />
-      </section>
-      <section>
-        <button onClick={fetchMoviesHandler}>Fetch Movies</button>
-      </section>
+  let content = (
+    <>
       {error ? (
         <section>
           <p>{error}</p>
@@ -65,6 +84,24 @@ function App() {
           {isLoading && <p>Loading...</p>}
         </section>
       )}
+    </>
+  );
+
+  if (toggleMenu) {
+    content = (
+      <section>
+        <AddMovie onAddMovie={onAddMovie} />
+      </section>
+    );
+  }
+
+  return (
+    <React.Fragment>
+      <section>
+        <button onClick={fetchMoviesHandler}>Fetch Movies</button>
+        <button onClick={showAddMoviesPage}>Add Movies</button>
+      </section>
+      {content}
     </React.Fragment>
   );
 }
