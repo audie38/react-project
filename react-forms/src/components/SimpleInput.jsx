@@ -1,21 +1,41 @@
-import PropTypes from "prop-types";
+import { useRef, useState } from "react";
 
-const SimpleInput = (props) => {
+const SimpleInput = () => {
+  const nameInputRef = useRef();
+  const [enteredName, setEnteredName] = useState("");
+  const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
+  const [enteredNameTouched, setEnteredNameTouched] = useState(false);
+
+  const nameInputChangeHandler = (event) => {
+    setEnteredName(event.target.value);
+  };
+
+  const formSubmitHandler = (event) => {
+    event.preventDefault();
+    setEnteredNameTouched(true);
+    if (enteredName.trim() === "") {
+      setEnteredNameIsValid(false);
+      return;
+    }
+    setEnteredNameIsValid(true);
+    console.log(enteredName);
+  };
+
+  const nameInputInvalid = !enteredNameIsValid && enteredNameTouched;
+  const nameInputClasses = nameInputInvalid ? "form-control invalid" : "form-control";
+
   return (
-    <form>
-      <div className="form-control">
+    <form onSubmit={formSubmitHandler}>
+      <div className={nameInputClasses}>
         <label htmlFor="name">Your Name</label>
-        <input type="text" id="name" />
+        <input ref={nameInputRef} type="text" id="name" value={enteredName} onChange={nameInputChangeHandler} />
+        {nameInputInvalid && <p className="error-text">Name must not be empty</p>}
       </div>
       <div className="form-actions">
-        <button onClick={props.submit}>Submit</button>
+        <button>Submit</button>
       </div>
     </form>
   );
-};
-
-SimpleInput.propTypes = {
-  submit: PropTypes.func,
 };
 
 export default SimpleInput;
