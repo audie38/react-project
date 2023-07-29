@@ -1,75 +1,74 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import useHttp from "./hooks/use-http";
 import AddMovie from "./components/AddMovie";
 import MoviesList from "./components/MoviesList";
 import "./App.css";
 
-function App() {
-  const [movies, setMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [toggleMenu, setToggleMenu] = useState(false);
+const BASE_API_URL = `${import.meta.env.VITE_API_BASE_URL}/films/`;
 
+function App() {
+  const [toggleMenu, setToggleMenu] = useState(false);
+  const [movies, setMovies] = useState([]);
   const showAddMoviesPage = () => {
     setToggleMenu(true);
   };
-
   const hideAddMoviesPage = () => {
     setToggleMenu(false);
   };
 
-  const fetchMoviesHandler = useCallback(async () => {
+  const transformData = (tasksObj) => {
+    const data = tasksObj?.data.map((movieData) => {
+      return {
+        id: movieData.id,
+        title: movieData.title,
+        openingText: movieData.openingText,
+        releaseDate: new Date(movieData.releaseDate).toLocaleDateString(),
+      };
+    });
+    setMovies(data);
+  };
+  const { isLoading, error, sendRequest } = useHttp();
+
+  const fetchMoviesHandler = () => {
     hideAddMoviesPage();
-    setIsLoading(true);
-    setError(null);
-    try {
-      const result = await fetch(`${import.meta.env.VITE_API_BASE_URL}/films/`, {
+    sendRequest(
+      BASE_API_URL,
+      {
         method: "GET",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-      });
-      if (!result.ok) {
-        throw new Error("Something went wrong");
-      }
-      const data = await result.json();
-      const transformedData = data.data.map((movieData) => {
-        return {
-          id: movieData.id,
-          title: movieData.title,
-          openingText: movieData.openingText,
-          releaseDate: new Date(movieData.releaseDate).toLocaleDateString(),
-        };
-      });
-      setMovies(transformedData);
-    } catch (error) {
-      setError(error.message);
-    }
-    setIsLoading(false);
-  }, []);
+      },
+      transformData
+    );
+  };
 
   const onAddMovie = async (mv) => {
-    try {
-      const newMovie = await fetch(`${import.meta.env.VITE_API_BASE_URL}/films/`, {
-        method: "POST",
+    const addMovieConfig = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(mv),
+    };
+    sendRequest(BASE_API_URL, addMovieConfig);
+  };
+
+  useEffect(() => {
+    sendRequest(
+      BASE_API_URL,
+      {
+        method: "GET",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(mv),
-      });
-      if (!newMovie.ok) {
-        throw new Error("Failed to Add");
-      }
-      await newMovie.json();
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
-  useEffect(() => {
-    fetchMoviesHandler();
-  }, [fetchMoviesHandler]);
+      },
+      transformData
+    );
+  }, [sendRequest]);
 
   let content = (
     <>
