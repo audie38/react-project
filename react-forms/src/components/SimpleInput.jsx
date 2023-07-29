@@ -8,6 +8,16 @@ const SimpleInput = () => {
 
   const nameInputChangeHandler = (event) => {
     setEnteredName(event.target.value);
+    if (event.target.value.trim() !== "") {
+      setEnteredNameIsValid(true);
+    }
+  };
+
+  const nameInputBlurHandler = () => {
+    setEnteredNameTouched(true);
+    if (enteredName.trim() === "") {
+      setEnteredNameIsValid(false);
+    }
   };
 
   const formSubmitHandler = (event) => {
@@ -28,7 +38,7 @@ const SimpleInput = () => {
     <form onSubmit={formSubmitHandler}>
       <div className={nameInputClasses}>
         <label htmlFor="name">Your Name</label>
-        <input ref={nameInputRef} type="text" id="name" value={enteredName} onChange={nameInputChangeHandler} />
+        <input ref={nameInputRef} type="text" id="name" value={enteredName} onChange={nameInputChangeHandler} onBlur={nameInputBlurHandler} />
         {nameInputInvalid && <p className="error-text">Name must not be empty</p>}
       </div>
       <div className="form-actions">
