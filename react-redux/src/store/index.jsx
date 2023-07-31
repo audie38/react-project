@@ -1,5 +1,9 @@
 import { createStore } from "redux";
 
+export const INCREMENT = "increment";
+export const DECREMENT = "decrement";
+export const TOGGLE = "toggle";
+
 const initialState = {
   counter: 0,
   showCounter: true,
@@ -8,11 +12,11 @@ const initialState = {
 const counterReducer = (state, action) => {
   const amount = action.value || 1;
   switch (action.type) {
-    case "increment":
+    case INCREMENT:
       return { counter: state.counter + amount, showCounter: state.showCounter };
-    case "decrement":
+    case DECREMENT:
       return { counter: state.counter - amount, showCounter: state.showCounter };
-    case "toggle":
+    case TOGGLE:
       return { counter: state.counter, showCounter: !state.showCounter };
     default:
       return state;
