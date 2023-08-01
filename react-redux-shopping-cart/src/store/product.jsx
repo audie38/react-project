@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const productInitialState = {
   cart: [],
   showCart: false,
+  notification: null,
 };
 
 const productSlice = createSlice({
@@ -17,7 +18,7 @@ const productSlice = createSlice({
     },
     addToCart(state, action) {
       const newItem = action.payload;
-      const existingItemIndex = state.cart.findIndex((item) => item.id === newItem.id);
+      const existingItemIndex = state.cart.findIndex((item) => item.productId === newItem.productId);
       const existingItem = state.cart[existingItemIndex];
       if (existingItem) {
         let updateItem = { ...existingItem, quantity: existingItem.quantity + newItem.quantity };
@@ -29,7 +30,7 @@ const productSlice = createSlice({
       }
     },
     updateCartItemQuantity(state, action) {
-      const existingItemIndex = state.cart.findIndex((item) => item.id === action.payload.id);
+      const existingItemIndex = state.cart.findIndex((item) => item.productId === action.payload.productId);
       const existingItem = state.cart[existingItemIndex];
       if (existingItem) {
         let updatedItem = { ...existingItem, quantity: existingItem.quantity + action.payload.quantity };
@@ -38,6 +39,9 @@ const productSlice = createSlice({
         updatedList = updatedList.filter((item) => item.quantity > 0);
         state.cart = updatedList;
       }
+    },
+    showNotification(state, action) {
+      state.notification = { status: action.payload.status, title: action.payload.title, message: action.payload.message };
     },
   },
 });

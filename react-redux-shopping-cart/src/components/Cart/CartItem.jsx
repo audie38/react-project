@@ -9,14 +9,14 @@ const CartItem = (props) => {
   const totalItemPrice = `$ ${(props.item.quantity * props.item.price).toFixed(2)}`;
   const addItemQuantityHandler = () => {
     const updateVal = {
-      id: props.item.id,
+      productId: props.item.productId,
       quantity: 1,
     };
     dispatch(productActions.updateCartItemQuantity(updateVal));
   };
   const minItemQuantityHandler = () => {
     const updateVal = {
-      id: props.item.id,
+      productId: props.item.productId,
       quantity: -1,
     };
     dispatch(productActions.updateCartItemQuantity(updateVal));

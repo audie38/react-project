@@ -9,7 +9,7 @@ const Cart = () => {
   const cartItemContent = (
     <ul>
       {cartItems.map((item) => (
-        <CartItem key={item.id} item={item} />
+        <CartItem key={item.productId} item={item} />
       ))}
     </ul>
   );
