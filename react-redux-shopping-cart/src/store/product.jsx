@@ -46,6 +46,51 @@ const productSlice = createSlice({
   },
 });
 
+export const sendCartData = (cart) => {
+  return async (dispatch) => {
+    dispatch(
+      productActions.showNotification({
+        status: "pending",
+        title: "Sending...",
+        message: "Sending the Data",
+      })
+    );
+
+    const sendRequest = async () => {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/cartItem`, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cart),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to Send data");
+      }
+    };
+
+    try {
+      await sendRequest();
+      dispatch(
+        productActions.showNotification({
+          status: "success",
+          title: "Sending Data Success",
+          message: "Success Sending the Data",
+        })
+      );
+    } catch (error) {
+      dispatch(
+        productActions.showNotification({
+          status: "error",
+          title: "Error",
+          message: error,
+        })
+      );
+    }
+  };
+};
+
 export const productActions = productSlice.actions;
 
 export default productSlice.reducer;
