@@ -2,12 +2,12 @@ import CartButton from "../Cart/CartButton";
 import classes from "./MainHeader.module.css";
 
 import { useDispatch } from "react-redux";
-import { productActions } from "../../store/product";
+import { cartActions } from "../../store/cart";
 
 const MainHeader = () => {
   const dispatch = useDispatch();
   const navigateToHome = () => {
-    dispatch(productActions.hideCart());
+    dispatch(cartActions.hideCart());
   };
   return (
     <header className={classes.header}>
