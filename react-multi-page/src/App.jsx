@@ -1,14 +1,26 @@
-import { Outlet } from "react-router-dom";
-import NavigationBar from "./components/UI/NavigationBar";
-import React from "react";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+
+import Root from "./components/Layout/Root";
+import Home from "./pages/Home";
+import Product from "./pages/Product";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Root />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/product",
+        element: <Product />,
+      },
+    ],
+  },
+]);
 
 export default function App() {
-  return (
-    <React.Fragment>
-      <NavigationBar />
-      <div className="container my-5">
-        <Outlet />
-      </div>
-    </React.Fragment>
-  );
+  return <RouterProvider router={router} />;
 }
