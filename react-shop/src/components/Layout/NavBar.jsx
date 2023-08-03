@@ -14,9 +14,6 @@ const NavBar = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav ms-auto">
-            <NavLink to="/product" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
-              Product
-            </NavLink>
             <NavLink to="/cart" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
               <i className="fa-solid fa-cart-shopping"></i>
               <span className="mx-2">Cart</span>

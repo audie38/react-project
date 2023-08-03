@@ -1,8 +1,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { fetchData } from "./store/Product/productActions";
 
 import Root from "./components/Layout/Root";
 import Product from "./pages/Product/Product";
-import ProductAddEdit from "./pages/Product/ProductAddEdit";
+import ProductDetail from "./pages/Product/ProductDetail";
 import Cart from "./pages/Cart/Cart";
 
 const router = createBrowserRouter([
@@ -16,12 +19,8 @@ const router = createBrowserRouter([
         element: <Product />,
       },
       {
-        path: "/product",
-        element: <ProductAddEdit />,
-      },
-      {
         path: "/product/:id",
-        element: <ProductAddEdit />,
+        element: <ProductDetail />,
       },
       {
         path: "/cart",
@@ -32,5 +31,10 @@ const router = createBrowserRouter([
 ]);
 
 export default function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchData());
+  }, [dispatch]);
+
   return <RouterProvider router={router} />;
 }

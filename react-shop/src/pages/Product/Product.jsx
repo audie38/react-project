@@ -1,5 +1,13 @@
+import { Fragment } from "react";
+
+import ProductList from "../../components/Product/ProductList";
+
 const Product = () => {
-  return <div>Product</div>;
+  return (
+    <Fragment>
+      <ProductList />
+    </Fragment>
+  );
 };
 
 export default Product;
