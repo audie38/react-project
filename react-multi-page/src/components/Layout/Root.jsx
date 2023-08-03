@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import NavigationBar from "../UI/NavigationBar";
+import NavigationBar from "./NavigationBar";
 import { Outlet } from "react-router-dom";
 
 const Root = () => {
