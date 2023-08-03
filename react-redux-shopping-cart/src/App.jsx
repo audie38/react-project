@@ -12,7 +12,7 @@ let initialState = true;
 
 export default function App() {
   const showCart = useSelector((state) => state.cart.showCart);
-  const notification = useSelector((state) => state.cart.notification);
+  const notification = useSelector((state) => state.notif.notification);
   const cart = useSelector((state) => state.cart.cart);
   const cartUpdated = useSelector((state) => state.cart.itemsUpdated);
 
