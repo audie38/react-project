@@ -2,6 +2,8 @@ const asyncHandler = require("express-async-handler");
 const uploadFile = require("../middleware/upload");
 const Events = require("../models/event");
 const { Op } = require("sequelize");
+const path = require("path");
+const fs = require("fs");
 
 // @desc    Create New Event
 // @route   POST /api/event
@@ -124,6 +126,13 @@ const deleteEvent = asyncHandler(async (req, res) => {
   if (!existingEvent) {
     return res.status(404).json({ message: "Event Not Found" });
   }
+
+  const deletedEventImagePath = path.join(__dirname, "..", "public/uploads/", existingEvent.eventImage);
+  await fs.unlink(deletedEventImagePath, (err) => {
+    if (err) {
+      return res.status(500).json({ message: err });
+    }
+  });
 
   await existingEvent.destroy();
   res.status(200).json({ message: "Event Deleted" });
