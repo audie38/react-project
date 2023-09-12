@@ -183,7 +183,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EventObjectResponse"
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/EventObjectResponse"
+                    }
+                  }
                 }
               }
             }
@@ -200,9 +206,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/EventObjectResponse"
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/EventObjectResponse"
+                      }
+                    }
                   }
                 }
               }
@@ -244,15 +255,6 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "code": {
-                      "type": "number"
-                    },
-                    "status": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    },
                     "uploadedFile": {
                       "type": "string"
                     }
@@ -286,7 +288,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EventObjectResponse"
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/EventObjectResponse"
+                    }
+                  }
                 }
               }
             }
@@ -409,15 +417,6 @@
       "RegisterOrLoginResponse": {
         "type": "object",
         "properties": {
-          "code": {
-            "type": "number"
-          },
-          "status": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          },
           "data": {
             "type": "object",
             "properties": {
@@ -434,12 +433,6 @@
       "DefaultResponseWithoutData": {
         "type": "object",
         "properties": {
-          "code": {
-            "type": "number"
-          },
-          "status": {
-            "type": "string"
-          },
           "message": {
             "type": "string"
           }

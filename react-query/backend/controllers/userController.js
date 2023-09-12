@@ -67,7 +67,9 @@ const updateUser = asyncHandler(async (req, res) => {
   existingUser.password = hashedPassword;
   await existingUser.save();
 
-  return res.status(200).json({ message: "User Password Updated" });
+  return res.status(200).json({
+    message: "User Password Updated",
+  });
 });
 
 // @desc    Delete User
