@@ -1,0 +1,93 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+:root {
+  --dark: #000000;
+  --light: #f4f4f4;
+  --pink-800: #d6336c;
+  --pink-900: #c2255c;
+  --dark-blue: #222c31;
+}
+
+body {
+  font-family: sans-serif;
+  min-height: 100vh;
+  background-color: var(--dark-blue);
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  background-color: var(--pink-800);
+  color: var(--light);
+  border: none;
+  border-radius: 9px;
+  padding: 0.8rem 2rem;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--pink-900);
+}
+
+.header {
+  background-image: url(./assets/meetup.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 80vh;
+}
+
+.header-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15%;
+}
+
+.header-nav h1 {
+  color: var(--light);
+  padding-top: 3rem;
+}
+
+.header-nav__list {
+  padding-top: 3rem;
+}
+
+.header-desc {
+  margin: 0 15%;
+  padding: 3rem 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 2.5rem;
+}
+
+.header-desc h2 {
+  font-size: 2.5rem;
+  line-height: 3.5rem;
+}
+
+.header-desc span {
+  color: var(--pink-800);
+}
+
+.header-desc p {
+  font-weight: 300;
+}
