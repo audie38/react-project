@@ -1,5 +1,5 @@
-import EventForm from "../event/EventForm";
-import Card from "../ui/Card";
+import EventForm from "../../event/EventForm";
+import Card from "../../UI/Card";
 
 const EventAddEdit = () => {
   return (

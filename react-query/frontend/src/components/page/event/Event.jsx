@@ -1,5 +1,5 @@
-import EventSearch from "../event/EventSearch";
-import EventList from "../event/EventList";
+import EventSearch from "../../event/EventSearch";
+import EventList from "../../event/EventList";
 
 const Event = () => {
   return (
