@@ -4,6 +4,7 @@ const Events = require("../models/event");
 const { Op } = require("sequelize");
 const path = require("path");
 const fs = require("fs");
+const { logEvents } = require("../middleware/logger");
 
 // @desc    Create New Event
 // @route   POST /api/event
@@ -133,14 +134,22 @@ const deleteEvent = asyncHandler(async (req, res) => {
   }
 
   if (parseInt(existingEvent.userId) == parseInt(req?.user?.userId)) {
+    const isImageDeleted = true;
     const deletedEventImagePath = path.join(__dirname, "..", "public/uploads/", existingEvent.eventImage);
-    await fs.unlink(deletedEventImagePath, (err) => {
-      if (err) {
-        return res.status(500).json({ message: err });
-      }
-    });
+    if (existingEvent?.eventImage !== "") {
+      await fs.promises.unlink(deletedEventImagePath, (err) => {
+        if (err) {
+          isImageDeleted = false;
+          logEvents(`${err.name}: ${err.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, "errLog.log");
+          return res.status(500).json({ message: err });
+        }
+      });
+    }
 
-    await existingEvent.destroy();
+    if (isImageDeleted) {
+      await existingEvent.destroy();
+    }
+
     res.status(200).json({ message: "Event Deleted" });
   }
 
