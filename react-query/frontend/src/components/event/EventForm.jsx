@@ -24,7 +24,7 @@ const EventForm = () => {
         <label htmlFor="description" className="form-label">
           Description
         </label>
-        <input type="text" name="description" id="description" className="form-control" />
+        <textarea name="description" id="description" className="form-control"></textarea>
       </div>
       <div className="mb-3">
         <label htmlFor="location" className="form-label">
