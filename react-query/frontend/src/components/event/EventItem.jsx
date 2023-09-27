@@ -6,7 +6,6 @@ const API_BASE_URL = import.meta.env.VITE_BASE_API_URL;
 
 const EventItem = (props) => {
   const event = props.data;
-  console.log(`${API_BASE_URL}/event/img/${event.eventImage}`);
   return (
     <Link className="nav-link" to={`/event/${event.eventsId}`}>
       <Card>
