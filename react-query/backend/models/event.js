@@ -1,6 +1,8 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../config/db");
 
+const Users = require("./user");
+
 const Events = sequelize.define("events", {
   eventsId: {
     type: Sequelize.BIGINT,
@@ -31,5 +33,8 @@ const Events = sequelize.define("events", {
     type: Sequelize.STRING,
   },
 });
+
+Events.belongsTo(Users, { constraint: true, onDelete: "CASCADE", foreignKey: "userId", targetKey: "userId" });
+Users.hasMany(Events, { foreignKey: "userId", sourceKey: "userId" });
 
 module.exports = Events;
