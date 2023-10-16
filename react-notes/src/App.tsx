@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Container } from "react-bootstrap";
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 
-import Notes from "./pages/Note";
+import Note from "./pages/Note";
 import NoteAdd from "./pages/NoteAdd";
 import { NoteEdit } from "./pages/NoteEdit";
 import { useLocalStorage } from "./hooks/useLocalStorage";
@@ -73,10 +73,28 @@ function App() {
     setTags((prev) => [...prev, tag]);
   }
 
+  function updateTag(id: string, label: string) {
+    setTags((prevTags) => {
+      return prevTags.map((tag) => {
+        if (tag.id === id) {
+          return { ...tag, label };
+        } else {
+          return tag;
+        }
+      });
+    });
+  }
+
+  function deleteTag(id: string) {
+    setTags((prevTags) => {
+      return prevTags.filter((tag) => tag.id !== id);
+    });
+  }
+
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Notes availableTags={tags} notes={notesWithTags} />,
+      element: <Note availableTags={tags} notes={notesWithTags} updateTag={updateTag} deleteTag={deleteTag} />,
     },
     {
       path: "/note",
