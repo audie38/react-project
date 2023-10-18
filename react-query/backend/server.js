@@ -9,6 +9,7 @@ const errorHandler = require("./middleware/errorHandler");
 const corsOptions = require("./config/corsOptions");
 const sequelize = require("./config/db");
 const cookieParser = require("cookie-parser");
+const protect = require("./middleware/authHandler");
 
 app.use(logger);
 app.use(cors(corsOptions));
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
   res.send("OK!");
 });
 
+app.use("/api/user", require("./routes/userRoutes"));
 app.use("/api/event", require("./routes/eventRoutes"));
 app.use("/api/event/img", express.static("public/uploads"));
 
