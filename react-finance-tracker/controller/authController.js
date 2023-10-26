@@ -2,11 +2,14 @@ const asyncHandler = require("express-async-handler");
 const passport = require("passport");
 const CLIENT_URL = process.env.CLIENT_BASE_URL;
 
+const generateToken = require("../utils/generateToken");
+
 // @desc Success Github OAuth Login Feedback
 // @route GET /auth/login/success
 // @access Public
 const successLoginHandler = asyncHandler(async (req, res) => {
   if (req.user) {
+    generateToken(res, req.user.username);
     res.status(200).json({
       success: true,
       message: "Success",
@@ -29,6 +32,10 @@ const failedLoginHandler = asyncHandler(async (req, res) => {
 // @route GET /auth/login/success
 // @access Public
 const logoutHandler = asyncHandler(async (req, res) => {
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  });
   req.logOut();
   res.redirect(CLIENT_URL);
 });
