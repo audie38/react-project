@@ -15,7 +15,7 @@ const successLoginHandler = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc Failed Github OAuth Login
+// @desc Failed Github OAuth Login Feedback
 // @route GET /auth/login/failed
 // @access Public
 const failedLoginHandler = asyncHandler(async (req, res) => {
@@ -26,21 +26,14 @@ const failedLoginHandler = asyncHandler(async (req, res) => {
 });
 
 // @desc Github OAuth Logout
-// @route GET /auth/logout
+// @route GET /auth/login/success
 // @access Public
 const logoutHandler = asyncHandler(async (req, res) => {
   req.logOut();
   res.redirect(CLIENT_URL);
 });
 
-// @desc Github OAuth Login
-// @route GET /auth/github
-// @access Public
 const githubLoginHandler = passport.authenticate("github", { scope: ["profile"] });
-
-// @desc Github OAuth Login Redirect
-// @route GET /auth/github/callback
-// @access Public
 const githubLoginCallbackHandler = passport.authenticate("github", {
   successRedirect: CLIENT_URL,
   failureRedirect: "/login/failed",
