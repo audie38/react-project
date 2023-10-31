@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", require("./routes/authRoute"));
-app.use("/api/user", require("./routes/userRoute"));
+app.use("/api/v1/user", require("./routes/userRoute"));
 
 app.all("*", (req, res) => {
   res.status(404);
