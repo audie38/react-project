@@ -6,7 +6,6 @@ const { encryptPassword, validatePassword } = require("../utils/helper");
 const { Op } = require("sequelize");
 const path = require("path");
 const fs = require("fs");
-const { logEvents } = require("../middleware/logger");
 
 // @desc Success Auth
 // @route GET /api/v1/user/success
