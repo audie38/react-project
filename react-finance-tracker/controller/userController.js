@@ -119,6 +119,15 @@ const updateUser = asyncHandler(async (req, res) => {
     existingUser.password = await encryptPassword(password);
   }
   if (photos) {
+    if (existingUser?.photos !== null && existingUser?.photos !== "") {
+      const rawLocation = existingUser?.photos.replace(`${req.get("host")}${req.baseUrl}/img/`, "");
+      const deletedImgPath = path.join(__dirname, "..", "public/uploads/", rawLocation);
+      await fs.promises.unlink(deletedImgPath, (err) => {
+        if (err) {
+          return res.status(500).json({ message: err });
+        }
+      });
+    }
     existingUser.photos = photos;
   }
 
@@ -138,8 +147,9 @@ const deleteUser = asyncHandler(async (req, res) => {
     return res.status(404).json({ message: "User Not Registered" });
   }
   let isImageDeleted = true;
-  const deletedImgPath = path.join(__dirname, "..", "public/uploads/", existingUser.photos);
-  if (existingUser.photos !== "" || !existingUser.photos) {
+  if (existingUser?.photos !== null && existingUser?.photos !== "") {
+    const rawLocation = existingUser?.photos.replace(`${req.get("host")}${req.baseUrl}/img/`, "");
+    const deletedImgPath = path.join(__dirname, "..", "public/uploads/", rawLocation);
     await fs.promises.unlink(deletedImgPath, (err) => {
       if (err) {
         isImageDeleted = false;
