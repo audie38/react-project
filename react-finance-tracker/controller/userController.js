@@ -1,8 +1,12 @@
 const Users = require("../model/User");
 const asyncHandler = require("express-async-handler");
+const uploadFile = require("../middleware/upload");
 const generateToken = require("../utils/generateToken");
 const { encryptPassword, validatePassword } = require("../utils/helper");
 const { Op } = require("sequelize");
+const path = require("path");
+const fs = require("fs");
+const { logEvents } = require("../middleware/logger");
 
 // @desc Success Auth
 // @route GET /api/v1/user/success
@@ -133,14 +137,39 @@ const deleteUser = asyncHandler(async (req, res) => {
   if (!existingUser) {
     return res.status(404).json({ message: "User Not Registered" });
   }
-  const deletedUser = await existingUser.destroy();
-  if (deletedUser) {
-    return res.status(200).json({
-      success: true,
-      message: "Success",
+  let isImageDeleted = true;
+  const deletedImgPath = path.join(__dirname, "..", "public/uploads/", existingUser.photos);
+  if (existingUser.photos !== "" || !existingUser.photos) {
+    await fs.promises.unlink(deletedImgPath, (err) => {
+      if (err) {
+        isImageDeleted = false;
+        return res.status(500).json({ message: err });
+      }
     });
   }
+
+  if (isImageDeleted) {
+    const deletedUser = await existingUser.destroy();
+    if (deletedUser) {
+      return res.status(200).json({
+        success: true,
+        message: "Success",
+      });
+    }
+  }
   return res.status(500).json({ message: "Failed to Delete User" });
+});
+
+// @desc    Upload Event Image
+// @route   POST /api/v1/user/upload
+// @access  Private
+const uploadEventImage = asyncHandler(async (req, res) => {
+  try {
+    await uploadFile(req, res);
+    res.status(200).json({ uploadedFile: `${req.get("host")}${req.baseUrl}/img/${req.file.filename}` });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
 });
 
 module.exports = {
@@ -150,4 +179,5 @@ module.exports = {
   logoutUser,
   updateUser,
   deleteUser,
+  uploadEventImage,
 };
