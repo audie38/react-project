@@ -1,0 +1,349 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "React Events REST API",
+    "version": "1.0"
+  },
+  "servers": [{ "url": "http://localhost:3000/api/v1" }],
+  "paths": {
+    "/user": {
+      "get": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": ["User API"],
+        "description": "Get Logged In User Info",
+        "summary": "Get Logged In User Info",
+        "responses": {
+          "200": {
+            "description": "Success Get User Info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/UserResObj"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["User API"],
+        "description": "Register New User",
+        "summary": "Register New User",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserReqObj"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success Register User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/UserResObj"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": ["User API"],
+        "description": "Update User Info",
+        "summary": "Update User Info",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserReqObj"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success Update User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/UserResObj"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": ["User API"],
+        "description": "Delete User",
+        "summary": "Delete User",
+        "responses": {
+          "200": {
+            "description": "Success Delete User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/upload": {
+      "post": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": ["Events API"],
+        "description": "Upload Event Image",
+        "summary": "Upload Event Image",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success Upload Image",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "filename": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/event": {
+      "get": {
+        "tags": ["Events API"],
+        "description": "List All Events",
+        "summary": "List All Events",
+        "responses": {
+          "200": {
+            "description": "Success Get All Events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/EventResObj"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {}
+    },
+    "/event/{eventId}": {
+      "get": {},
+      "put": {},
+      "delete": {}
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "UserAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "jwt",
+        "description": "Authentication for API"
+      }
+    },
+    "schemas": {
+      "UserResObj": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        }
+      },
+      "UserReqObj": {
+        "type": "object",
+        "properties": {
+          "displayName": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "EventResObj": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "eventDate": {
+            "type": "string"
+          },
+          "eventTime": {
+            "type": "string"
+          },
+          "eventLocation": {
+            "type": "string"
+          },
+          "eventImage": {
+            "type": "string"
+          },
+          "eventCreator": {
+            "type": "string"
+          }
+        }
+      },
+      "EventReqObj": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "eventDate": {
+            "type": "string"
+          },
+          "eventTime": {
+            "type": "string"
+          },
+          "eventLocation": {
+            "type": "string"
+          },
+          "eventImage": {
+            "type": "string"
+          },
+          "eventCreator": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
