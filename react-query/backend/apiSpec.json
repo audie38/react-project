@@ -237,12 +237,183 @@
           }
         }
       },
-      "post": {}
+      "post": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": ["Events API"],
+        "description": "Create New Events",
+        "summary": "Create New Events",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventReqObj"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success Create New Events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/EventResObj"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "/event/{eventId}": {
-      "get": {},
-      "put": {},
-      "delete": {}
+      "get": {
+        "tags": ["Events API"],
+        "description": "Get Event by Id",
+        "summary": "Get Event by Id",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Event Id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success Get Event",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/EventResObj"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": ["Events API"],
+        "description": "Update Events",
+        "summary": "Update Events",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Event Id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventReqObj"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success Update Events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/EventResObj"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": ["Events API"],
+        "description": "Delete Events",
+        "summary": "Delete Events",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Event Id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success Delete Events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
