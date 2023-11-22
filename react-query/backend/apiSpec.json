@@ -150,6 +150,83 @@
         }
       }
     },
+    "/user/login": {
+      "post": {
+        "tags": ["User API"],
+        "description": "User Auth Login",
+        "summary": "User Auth Login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "account": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User Login Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/logout": {
+      "post": {
+        "tags": ["User API"],
+        "description": "User Logout",
+        "summary": "User Logout",
+        "responses": {
+          "200": {
+            "description": "User Logout Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/upload": {
       "post": {
         "security": [
@@ -157,9 +234,9 @@
             "UserAuth": []
           }
         ],
-        "tags": ["Events API"],
-        "description": "Upload Event Image",
-        "summary": "Upload Event Image",
+        "tags": ["Upload API"],
+        "description": "Upload Image",
+        "summary": "Upload Image",
         "requestBody": {
           "content": {
             "multipart/form-data": {
