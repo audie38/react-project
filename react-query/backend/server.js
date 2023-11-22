@@ -34,6 +34,9 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", require("./routes/authRoute"));
+app.use("/api/v2/user", require("./routes/userRoute"));
+app.use("/api/v2/asset", require("./routes/assetRoute"));
+app.use("/api/v2/asset/img", express.static("public/uploads"));
 
 app.all("*", (req, res) => {
   res.status(404);

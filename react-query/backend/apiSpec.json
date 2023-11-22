@@ -67,8 +67,8 @@
                     "status": {
                       "type": "string"
                     },
-                    "data": {
-                      "$ref": "#/components/schemas/UserResObj"
+                    "message": {
+                      "type": "string"
                     }
                   }
                 }
