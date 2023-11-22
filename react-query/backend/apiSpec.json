@@ -440,6 +440,9 @@
           },
           "username": {
             "type": "string"
+          },
+          "photo": {
+            "type": "string"
           }
         }
       },
@@ -456,6 +459,9 @@
             "type": "string"
           },
           "password": {
+            "type": "string"
+          },
+          "photo": {
             "type": "string"
           }
         }
