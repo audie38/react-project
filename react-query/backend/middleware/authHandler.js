@@ -1,19 +1,29 @@
+const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
-const { verifyToken } = require("../utils/token");
+const User = require("../model/User");
 
 const protect = asyncHandler(async (req, res, next) => {
   let token = req?.cookies?.jwt;
-  if (!token) {
+  if (token) {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userExists = await User.findOne(
+      {
+        where: { username: decoded.username },
+      },
+      {
+        attributes: {
+          exclude: ["password"],
+        },
+      }
+    );
+    if (!userExists) {
+      return res.status(401).json({ message: "UnAuthorized" });
+    }
+    req.user = userExists;
+    next();
+  } else {
     return res.status(401).json({ message: "UnAuthorized" });
   }
-
-  const validationResult = await verifyToken(token);
-  if (!validationResult.isValidToken) {
-    return res.status(401).json({ message: "UnAuthorized" });
-  }
-
-  req.user = validationResult.existingUser;
-  next();
 });
 
 module.exports = protect;

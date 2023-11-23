@@ -1,12 +1,45 @@
 {
   "openapi": "3.0.2",
   "info": {
-    "title": "React Events API",
+    "title": "React Events REST API",
     "version": "1.0"
   },
-  "servers": [{ "url": "http://localhost:3000/api" }],
+  "servers": [{ "url": "http://localhost:3000/api/v1" }],
   "paths": {
     "/user": {
+      "get": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": ["User API"],
+        "description": "Get Logged In User Info",
+        "summary": "Get Logged In User Info",
+        "responses": {
+          "200": {
+            "description": "Success Get User Info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/UserResObj"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": ["User API"],
         "description": "Register New User",
@@ -15,18 +48,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "username": {
-                    "type": "string"
-                  },
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  }
-                }
+                "$ref": "#/components/schemas/UserReqObj"
               }
             }
           }
@@ -37,7 +59,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RegisterOrLoginResponse"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
@@ -47,33 +80,39 @@
       "put": {
         "security": [
           {
-            "auth": []
+            "UserAuth": []
           }
         ],
         "tags": ["User API"],
-        "description": "Update User Password",
-        "summary": "Update User Password",
+        "description": "Update User Info",
+        "summary": "Update User Info",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "password": {
-                    "type": "string"
-                  }
-                }
+                "$ref": "#/components/schemas/UserReqObj"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Success Update User Password",
+            "description": "Success Update User",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DefaultResponseWithoutData"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/UserResObj"
+                    }
+                  }
                 }
               }
             }
@@ -83,7 +122,7 @@
       "delete": {
         "security": [
           {
-            "auth": []
+            "UserAuth": []
           }
         ],
         "tags": ["User API"],
@@ -91,11 +130,19 @@
         "summary": "Delete User",
         "responses": {
           "200": {
-            "description": "Success Delete User Password",
+            "description": "Success Delete User",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DefaultResponseWithoutData"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
@@ -105,9 +152,9 @@
     },
     "/user/login": {
       "post": {
-        "tags": ["Auth API"],
-        "description": "User Login",
-        "summary": "User Login",
+        "tags": ["User API"],
+        "description": "User Auth Login",
+        "summary": "User Auth Login",
         "requestBody": {
           "content": {
             "application/json": {
@@ -131,7 +178,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RegisterOrLoginResponse"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
@@ -141,53 +199,25 @@
     },
     "/user/logout": {
       "post": {
-        "tags": ["Auth API"],
+        "tags": ["User API"],
         "description": "User Logout",
         "summary": "User Logout",
         "responses": {
           "200": {
-            "description": "Success Delete User Password",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DefaultResponseWithoutData"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/event": {
-      "post": {
-        "security": [
-          {
-            "auth": []
-          }
-        ],
-        "tags": ["Event API"],
-        "description": "Create New Event",
-        "summary": "Create New Event",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateOrUpdateEvents"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success Create New Event",
+            "description": "User Logout Success",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "data": {
-                      "type": "object",
-                      "$ref": "#/components/schemas/EventObjectResponse"
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
                     }
                   }
                 }
@@ -195,23 +225,53 @@
             }
           }
         }
-      },
-      "get": {
-        "tags": ["Event API"],
-        "description": "Get List of Events",
-        "summary": "Get List of Events",
+      }
+    },
+    "/upload": {
+      "post": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": ["Upload API"],
+        "description": "Upload Image",
+        "summary": "Upload Image",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "Success Get List of Events",
+            "description": "Success Upload Image",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
                     "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/EventObjectResponse"
+                      "type": "object",
+                      "properties": {
+                        "filename": {
+                          "type": "string"
+                        }
                       }
                     }
                   }
@@ -222,41 +282,72 @@
         }
       }
     },
-    "/event/upload": {
+    "/event": {
+      "get": {
+        "tags": ["Events API"],
+        "description": "List All Events",
+        "summary": "List All Events",
+        "responses": {
+          "200": {
+            "description": "Success Get All Events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/EventResObj"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "security": [
           {
-            "auth": []
+            "UserAuth": []
           }
         ],
-        "tags": ["Event API"],
-        "description": "Upload Event Image",
-        "summary": "Upload Event Image",
+        "tags": ["Events API"],
+        "description": "Create New Events",
+        "summary": "Create New Events",
         "requestBody": {
           "content": {
-            "multipart/form-data": {
+            "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "file"
-                  }
-                }
+                "$ref": "#/components/schemas/EventReqObj"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Success Upload Event Image",
+            "description": "Success Create New Events",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "uploadedFile": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
                       "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/EventResObj"
                     }
                   }
                 }
@@ -268,7 +359,7 @@
     },
     "/event/{eventId}": {
       "get": {
-        "tags": ["Event API"],
+        "tags": ["Events API"],
         "description": "Get Event by Id",
         "summary": "Get Event by Id",
         "parameters": [
@@ -290,9 +381,14 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
                     "data": {
-                      "type": "object",
-                      "$ref": "#/components/schemas/EventObjectResponse"
+                      "$ref": "#/components/schemas/EventResObj"
                     }
                   }
                 }
@@ -304,12 +400,12 @@
       "put": {
         "security": [
           {
-            "auth": []
+            "UserAuth": []
           }
         ],
-        "tags": ["Event API"],
-        "description": "Update Event Detail",
-        "summary": "Update Event Detail",
+        "tags": ["Events API"],
+        "description": "Update Events",
+        "summary": "Update Events",
         "parameters": [
           {
             "name": "eventId",
@@ -325,18 +421,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateOrUpdateEvents"
+                "$ref": "#/components/schemas/EventReqObj"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Success Delete Event",
+            "description": "Success Update Events",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DefaultResponseWithoutData"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/EventResObj"
+                    }
+                  }
                 }
               }
             }
@@ -346,12 +453,12 @@
       "delete": {
         "security": [
           {
-            "auth": []
+            "UserAuth": []
           }
         ],
-        "tags": ["Event API"],
-        "description": "Delete Event",
-        "summary": "Delete Event",
+        "tags": ["Events API"],
+        "description": "Delete Events",
+        "summary": "Delete Events",
         "parameters": [
           {
             "name": "eventId",
@@ -365,11 +472,19 @@
         ],
         "responses": {
           "200": {
-            "description": "Success Delete Event",
+            "description": "Success Delete Events",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DefaultResponseWithoutData"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
@@ -380,7 +495,7 @@
   },
   "components": {
     "securitySchemes": {
-      "auth": {
+      "UserAuth": {
         "type": "apiKey",
         "in": "cookie",
         "name": "jwt",
@@ -388,7 +503,76 @@
       }
     },
     "schemas": {
-      "CreateOrUpdateEvents": {
+      "UserResObj": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "photo": {
+            "type": "string"
+          }
+        }
+      },
+      "UserReqObj": {
+        "type": "object",
+        "properties": {
+          "displayName": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "photo": {
+            "type": "string"
+          }
+        }
+      },
+      "EventResObj": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "eventDate": {
+            "type": "string"
+          },
+          "eventTime": {
+            "type": "string"
+          },
+          "eventLocation": {
+            "type": "string"
+          },
+          "eventImage": {
+            "type": "string"
+          },
+          "eventCreator": {
+            "type": "string"
+          }
+        }
+      },
+      "EventReqObj": {
         "type": "object",
         "properties": {
           "title": {
@@ -409,61 +593,8 @@
           "eventImage": {
             "type": "string"
           },
-          "userId": {
-            "type": "integer"
-          }
-        }
-      },
-      "RegisterOrLoginResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "userId": {
-                "type": "integer"
-              },
-              "token": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      },
-      "DefaultResponseWithoutData": {
-        "type": "object",
-        "properties": {
-          "message": {
+          "eventCreator": {
             "type": "string"
-          }
-        }
-      },
-      "EventObjectResponse": {
-        "type": "object",
-        "properties": {
-          "eventsId": {
-            "type": "integer"
-          },
-          "title": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "eventDate": {
-            "type": "string"
-          },
-          "eventTime": {
-            "type": "string"
-          },
-          "eventLocation": {
-            "type": "string"
-          },
-          "eventImage": {
-            "type": "string"
-          },
-          "userId": {
-            "type": "integer"
           }
         }
       }

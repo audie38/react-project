@@ -1,10 +1,16 @@
-const allowedOrigin = process.env.ALLOWED_ORIGIN || [];
+const allowedOrigin = process.env.ALLOWED_ORIGINS.split(",") || [];
+const isDev = process.env.NODE_ENV == "development";
+
 const corsOptions = {
   origin: (origin, cb) => {
-    if (allowedOrigin.indexOf(origin) !== -1 || !origin) {
+    if (isDev) {
       cb(null, true);
     } else {
-      cb(new Error("Not Allowed by CORS"));
+      if (allowedOrigin.indexOf(origin) !== -1) {
+        cb(null, true);
+      } else {
+        cb(new Error("Not Allowed by CORS"));
+      }
     }
   },
   credentials: true,

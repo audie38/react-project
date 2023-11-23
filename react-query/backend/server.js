@@ -4,14 +4,26 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const cors = require("cors");
 const path = require("path");
-const { logger, logEvents } = require("./middleware/logger");
-const errorHandler = require("./middleware/errorHandler");
 const corsOptions = require("./config/corsOptions");
 const sequelize = require("./config/db");
 const cookieParser = require("cookie-parser");
-const protect = require("./middleware/authHandler");
+const cookieSession = require("cookie-session");
+const passport = require("passport");
+const passportSetup = require("./middleware/passport");
+const { logger, logEvents } = require("./middleware/logger");
+const errorHandler = require("./middleware/errorHandler");
 
 app.use(logger);
+app.use(
+  cookieSession({
+    name: "session",
+    keys: ["passport"],
+    maxAge: 24 * 60 * 60 * 1000,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
@@ -21,19 +33,15 @@ app.get("/", (req, res) => {
   res.send("OK!");
 });
 
-app.use("/api/user", require("./routes/userRoutes"));
-app.use("/api/event", require("./routes/eventRoutes"));
-app.use("/api/event/img", express.static("public/uploads"));
+app.use("/auth", require("./routes/authRoute"));
+app.use("/api/v2/user", require("./routes/userRoute"));
+app.use("/api/v2/event", require("./routes/eventRoute"));
+app.use("/api/v2/asset", require("./routes/assetRoute"));
+app.use("/api/v2/asset/img", express.static("public/uploads"));
 
 app.all("*", (req, res) => {
   res.status(404);
-  if (req.accepts("html")) {
-    res.sendFile(path.join(__dirname, "views", "404.html"));
-  } else if (req.accepts("json")) {
-    res.json({ message: "404 Not Found" });
-  } else {
-    res.type("txt").send("404 Not Found");
-  }
+  res.json({ message: "404 Not Found" });
 });
 
 app.use(errorHandler);

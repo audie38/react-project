@@ -6,7 +6,6 @@ const { encryptPassword, validatePassword } = require("../utils/helper");
 const { Op } = require("sequelize");
 const path = require("path");
 const fs = require("fs");
-const { logEvents } = require("../middleware/logger");
 
 // @desc Success Auth
 // @route GET /api/v1/user/success
@@ -46,7 +45,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const newUser = await Users.create({
     username: username,
     name: name,
-    email: email,
+    email: email ? email : null,
     password: await encryptPassword(password),
     photos: photos,
   });
@@ -119,6 +118,15 @@ const updateUser = asyncHandler(async (req, res) => {
     existingUser.password = await encryptPassword(password);
   }
   if (photos) {
+    if (existingUser?.photos !== null && existingUser?.photos !== "") {
+      const rawLocation = existingUser?.photos.replace(`${req.get("host")}${req.baseUrl}/img/`, "");
+      const deletedImgPath = path.join(__dirname, "..", "public/uploads/", rawLocation);
+      await fs.promises.unlink(deletedImgPath, (err) => {
+        if (err) {
+          return res.status(500).json({ message: err });
+        }
+      });
+    }
     existingUser.photos = photos;
   }
 
@@ -138,8 +146,9 @@ const deleteUser = asyncHandler(async (req, res) => {
     return res.status(404).json({ message: "User Not Registered" });
   }
   let isImageDeleted = true;
-  const deletedImgPath = path.join(__dirname, "..", "public/uploads/", existingUser.photos);
-  if (existingUser.photos !== "" || !existingUser.photos) {
+  if (existingUser?.photos !== null && existingUser?.photos !== "") {
+    const rawLocation = existingUser?.photos.replace(`${req.get("host")}${req.baseUrl}/img/`, "");
+    const deletedImgPath = path.join(__dirname, "..", "public/uploads/", rawLocation);
     await fs.promises.unlink(deletedImgPath, (err) => {
       if (err) {
         isImageDeleted = false;
