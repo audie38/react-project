@@ -1,6 +1,8 @@
+const User = require("../model/User");
 const asyncHandler = require("express-async-handler");
 const passport = require("passport");
 const CLIENT_URL = process.env.CLIENT_BASE_URL;
+const { RESP_CODE_OK, RESP_STATUS_OK } = require("../config/const");
 
 const generateToken = require("../utils/generateToken");
 
@@ -10,10 +12,27 @@ const generateToken = require("../utils/generateToken");
 const successLoginHandler = asyncHandler(async (req, res) => {
   if (req.user) {
     generateToken(res, req.user.username);
-    res.status(200).json({
-      success: true,
-      message: "Success",
-      user: req.user,
+    const userExists = await User.findOne({
+      where: {
+        username: req.user.username,
+      },
+    });
+    if (!userExists) {
+      return res.status(401).json({
+        success: false,
+        message: "Failed",
+      });
+    }
+    return res.status(200).json({
+      code: RESP_CODE_OK,
+      status: RESP_STATUS_OK,
+      data: {
+        userId: userExists?.userId,
+        displayName: userExists?.displayName,
+        email: userExists?.email,
+        username: userExists?.username,
+        photo: userExists?.photo,
+      },
     });
   }
 });
@@ -29,7 +48,7 @@ const failedLoginHandler = asyncHandler(async (req, res) => {
 });
 
 // @desc    Github OAuth Logout
-// @route   GET /auth/login/success
+// @route   GET /auth/logout
 // @access  Public
 const logoutHandler = asyncHandler(async (req, res) => {
   res.cookie("jwt", "", {
