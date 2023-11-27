@@ -4,7 +4,7 @@
     "title": "React Events REST API",
     "version": "1.0"
   },
-  "servers": [{ "url": "http://localhost:3000/api/v1" }],
+  "servers": [{ "url": "https://events.audiemilson.com/api/v2" }],
   "paths": {
     "/user": {
       "get": {

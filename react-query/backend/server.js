@@ -30,7 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("OK!");
+  res.sendFile(path.resolve(path.resolve(), "views", "api-docs.html"));
 });
 
 app.use("/auth", require("./routes/authRoute"));

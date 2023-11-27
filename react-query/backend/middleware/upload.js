@@ -6,11 +6,11 @@ const fs = require("fs");
 const fsPromises = require("fs").promises;
 
 const diskStorage = multer.diskStorage({
-  destination: async function (req, file, cb) {
-    if (!fs.existsSync(path.join(__dirname, "..", "public/uploads"))) {
-      await fsPromises.mkdir(path.join(__dirname, "..", "public/uploads"));
+  destination: function (req, file, cb) {
+    if (!fs.existsSync(path.join(__dirname, "..", "public", "uploads"))) {
+      fs.mkdirSync(path.join(__dirname, "..", "public", "uploads"), { recursive: true });
     }
-    cb(null, path.join(__dirname, "..", "public/uploads"));
+    cb(null, path.join(__dirname, "..", "public", "uploads"));
   },
   filename: function (req, file, cb) {
     cb(null, `${Date.now()}_${file.originalname}`);
