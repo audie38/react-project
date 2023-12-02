@@ -30,13 +30,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.sendFile(path.resolve(path.resolve(), "views", "api-docs.html"));
+  res.send("OK!");
 });
 
 app.use("/auth", require("./routes/authRoute"));
+app.get("/api/v2", (req, res) => {
+  res.sendFile(path.resolve(path.resolve(), "views", "api-docs.html"));
+});
+
 app.use("/api/v2/user", require("./routes/userRoute"));
 app.use("/api/v2/event", require("./routes/eventRoute"));
 app.use("/api/v2/asset", require("./routes/assetRoute"));
+app.use("/api/v2/asset/docs", express.static("public/docs"));
 app.use("/api/v2/asset/img", express.static("public/uploads"));
 
 app.all("*", (req, res) => {

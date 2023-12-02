@@ -14,7 +14,7 @@
     <script>
       window.onload = () => {
         window.ui = SwaggerUIBundle({
-          url: "https://events.audiemilson.com/apiSpec.json",
+          url: `${window.location.href}/asset/docs/apiSpec.json`,
           dom_id: "#swagger-ui",
           presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
           layout: "StandaloneLayout",
