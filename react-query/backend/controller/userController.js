@@ -147,7 +147,13 @@ const authUser = asyncHandler(async (req, res) => {
       return res.status(200).json({
         code: RESP_CODE_OK,
         status: RESP_STATUS_OK,
-        message: "Login Success",
+        data: {
+          userId: req.user?.userId,
+          displayName: req.user?.displayName,
+          email: req.user?.email,
+          username: req?.user?.username,
+          photo: req?.user?.photo,
+        },
       });
     }
     return res.status(401).json({ message: "Invalid Credentials" });
