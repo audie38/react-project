@@ -1,4 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { oauthUserLogin } from "./store/auth/authActions";
 
 import Root from "./components/layout/Root";
 import Error from "./pages/Error";
@@ -10,6 +13,7 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 
 export default function App() {
+  const dispatch = useDispatch();
   const router = createBrowserRouter([
     {
       path: "/",
@@ -60,6 +64,10 @@ export default function App() {
       ],
     },
   ]);
+
+  useEffect(() => {
+    dispatch(oauthUserLogin());
+  }, [dispatch]);
 
   return <RouterProvider router={router} />;
 }

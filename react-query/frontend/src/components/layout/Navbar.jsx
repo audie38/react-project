@@ -1,14 +1,28 @@
 import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser, oauthUserLogout } from "../../store/auth/authActions";
+import { useEffect } from "react";
 
 const Navbar = () => {
+  // const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
   const navigate = useNavigate();
-  const isLoggedIn = false;
+  const dispatch = useDispatch();
+
+  const loggedInUser = useSelector((state) => state.auth.userInfo);
+  const isLoggedIn = !isNaN(loggedInUser?.userId);
 
   const loggedOutHandler = () => {
     if (confirm("Logout ?")) {
-      navigate("/login");
+      dispatch(oauthUserLogout());
+      dispatch(logoutUser());
     }
   };
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+  }, [navigate, isLoggedIn]);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">

@@ -1,8 +1,10 @@
 import PropTypes from "prop-types";
 import { Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Private = (props) => {
-  const isLoggedIn = false;
+  const loggedInUser = useSelector((state) => state.auth.userInfo);
+  const isLoggedIn = !isNaN(loggedInUser?.userId);
   return isLoggedIn ? <>{props.children}</> : <Navigate to="/login" replace />;
 };
 
